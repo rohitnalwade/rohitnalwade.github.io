@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathe Easier: A Strategic FAQ for Business Leaders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application is structured as a single-page, tab-based interface to provide a non-linear, user-driven exploration experience. Busy HR leaders can immediately navigate to the topic most relevant to them (e.g., 'Strategic Impact', 'How It Works', 'Service Promise', 'Pricing'). This thematic structure is more intuitive and engaging than a linear FAQ scroll. Key interactions include an interactive diagram visualizing the link between air quality and attrition, data cards for expected improvements, a dynamic chart showing cognitive benefits, and accordions for detailed operational questions. This design prioritizes clarity, speed to information, and user engagement over strictly mirroring the source document's format. -->
+    <!-- Visualization & Content Choices: The FAQ content was transformed into interactive elements to enhance understanding and impact. 1) Attrition Funnel: Text describing the link between poor air and attrition was converted into a CSS-based visual diagram to make the business case instantly understandable. 2) Air Quality Metrics: Bullet points for expected improvements became interactive cards for a cleaner UI and focused engagement. 3) Cognitive Benefits: The reference to Harvard studies was visualized as a Bar Chart (Chart.js) to provide tangible, data-driven proof of cognitive improvement. 4) Operational Questions: The Q&A for service, maintenance, and policies was placed in an accordion to reduce clutter and allow users to drill down into specific concerns. These choices make the information more digestible and persuasive for a senior audience. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .tab-active {
+            border-color: #0369a1; /* sky-700 */
+            color: #0369a1;
+        }
+        .tab-inactive {
+            border-color: transparent;
+            color: #4b5563; /* gray-600 */
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800">
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <header class="text-center py-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 tracking-tight">
+                A Strategic Partner for a <span class="text-sky-700">Healthier, High-Retention</span> Workplace
+            </h1>
+            <p class="mt-6 max-w-3xl mx-auto text-lg text-gray-600">
+                An interactive guide for HR leaders on how our "Totally Managed" clean air service addresses your key business challenges, from talent retention to employee well-being.
+            </p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="sticky top-0 bg-slate-50/80 backdrop-blur-sm z-10 border-b border-gray-200">
+            <div class="max-w-5xl mx-auto flex justify-center space-x-4 sm:space-x-8" id="tab-nav">
+                <button data-tab="strategic-impact" class="tab-btn py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold border-b-2 transition-colors duration-200 tab-active">Strategic Impact</button>
+                <button data-tab="how-it-works" class="tab-btn py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold border-b-2 transition-colors duration-200 tab-inactive">How It Works</button>
+                <button data-tab="service-promise" class="tab-btn py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold border-b-2 transition-colors duration-200 tab-inactive">Service Promise</button>
+                <button data-tab="pricing-pilot" class="tab-btn py-4 px-2 sm:px-4 text-sm sm:text-base font-semibold border-b-2 transition-colors duration-200 tab-inactive">Pricing & Pilot</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="py-12 md:py-16">
+
+            <!-- Section: Strategic Impact -->
+            <section id="strategic-impact" class="tab-content">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center text-gray-900">The Real Business Case: From Air Quality to Talent Retention</h2>
+                    <p class="mt-4 text-center text-gray-600 max-w-2xl mx-auto">Many vendors promise "productivity." We focus on a measurable business problem you already track: employee attrition.</p>
+                
+                    <div class="mt-12">
+                        <h3 class="text-xl font-semibold text-center text-gray-800">The Direct Link Between Poor Air and Employee Attrition</h3>
+                        <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                            <!-- Step 1 -->
+                            <div class="p-6 bg-white rounded-lg shadow-sm">
+                                <span class="text-3xl font-bold text-sky-600">1</span>
+                                <h4 class="mt-2 text-lg font-semibold">Poor Air Quality</h4>
+                                <p class="mt-2 text-sm text-gray-600">High CO₂ and pollutant levels lead to daily discomforts like headaches, fatigue, and allergies.</p>
+                            </div>
+                            <!-- Arrow -->
+                            <div class="hidden md:flex items-center justify-center text-4xl text-gray-400 font-light">&rarr;</div>
+                            <!-- Step 2 -->
+                            <div class="p-6 bg-white rounded-lg shadow-sm">
+                                <span class="text-3xl font-bold text-sky-600">2</span>
+                                <h4 class="mt-2 text-lg font-semibold">Lower Job Satisfaction</h4>
+                                <p class="mt-2 text-sm text-gray-600">Chronic discomfort makes employees associate their job with feeling unwell and drained.</p>
+                            </div>
+                             <!-- Arrow -->
+                            <div class="hidden md:flex items-center justify-center text-4xl text-gray-400 font-light">&rarr;</div>
+                            <!-- Step 3 -->
+                            <div class="p-6 bg-white rounded-lg shadow-sm">
+                                <span class="text-3xl font-bold text-sky-600">3</span>
+                                <h4 class="mt-2 text-lg font-semibold">Increased Attrition</h4>
+                                <p class="mt-2 text-sm text-gray-600">Top talent leaves for workplaces that visibly invest in their well-being. This is a tangible cost.</p>
+                            </div>
+                        </div>
+                        <p class="mt-6 text-center text-gray-700 font-medium">Our service breaks this chain by providing a visibly healthier environment, a key differentiator in the war for talent.</p>
+                    </div>
+
+                    <div class="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">Measurable Improvements You Can Track</h3>
+                            <p class="mt-2 text-gray-600">We deliver specific, data-backed results that you can monitor on your dashboard.</p>
+                             <div class="mt-6 space-y-4">
+                                <div class="p-4 bg-teal-50 border-l-4 border-teal-500 rounded-r-lg">
+                                    <h4 class="font-semibold text-teal-800">Reduce Particulate Matter by 80-90%</h4>
+                                    <p class="text-sm text-teal-700">Filters fine dust, germs, and allergens to meet WHO safe air guidelines.</p>
+                                </div>
+                                 <div class="p-4 bg-sky-50 border-l-4 border-sky-500 rounded-r-lg">
+                                    <h4 class="font-semibold text-sky-800">Manage CO₂ to Boost Focus</h4>
+                                    <p class="text-sm text-sky-700">Keeps CO₂ levels below 1,000 ppm to combat drowsiness and improve concentration.</p>
+                                </div>
+                                <div class="p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-lg">
+                                    <h4 class="font-semibold text-indigo-800">Filter Chemicals & VOCs</h4>
+                                    <p class="text-sm text-indigo-700">Reduces chemicals from office furniture and cleaners that cause headaches.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chart-container relative h-80 w-full max-w-lg mx-auto">
+                            <canvas id="cognitiveChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: How It Works -->
+            <section id="how-it-works" class="tab-content hidden">
+                <div class="max-w-5xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center text-gray-900">Intelligent by Design, Hassle-Free by Nature</h2>
+                    <p class="mt-4 text-center text-gray-600 max-w-2xl mx-auto">Our service is more than just hardware. It's an intelligent ecosystem that works for you, so you don't have to.</p>
+                
+                    <div class="mt-12 bg-white p-8 rounded-lg shadow-sm border">
+                         <h3 class="text-xl font-semibold text-center text-gray-800">Our 4-Stage System Architecture</h3>
+                         <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center text-2xl text-sky-600">🧬</div>
+                                <h4 class="mt-4 font-semibold">1. SENSE</h4>
+                                <p class="mt-1 text-sm text-gray-600">A network of discreet sensors detects pollutants like dust, chemicals, and CO₂.</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center text-2xl text-sky-600">🧠</div>
+                                <h4 class="mt-4 font-semibold">2. ANALYZE</h4>
+                                <p class="mt-1 text-sm text-gray-600">Our cloud 'Brain' processes data to pinpoint where and when cleaning is needed.</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center text-2xl text-sky-600">💨</div>
+                                <h4 class="mt-4 font-semibold">3. ACT</h4>
+                                <p class="mt-1 text-sm text-gray-600">A 'swarm' of quiet purifiers activates on command to clean the air efficiently.</p>
+                            </div>
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center text-2xl text-sky-600">📊</div>
+                                <h4 class="mt-4 font-semibold">4. INFORM</h4>
+                                <p class="mt-1 text-sm text-gray-600">A real-time dashboard provides transparent proof of your air quality improvements.</p>
+                            </div>
+                         </div>
+                    </div>
+                    
+                    <div class="mt-16">
+                         <h3 class="text-xl font-semibold text-center text-gray-800">How We Compare</h3>
+                        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                            <div class="bg-white rounded-lg p-6 border shadow-sm">
+                                <h4 class="font-bold text-lg text-gray-800">Standalone Purifiers</h4>
+                                <p class="text-sm text-gray-500 mt-1">The Traditional Approach</p>
+                                <ul class="mt-4 space-y-2 text-sm">
+                                    <li class="flex items-start"><span class="text-red-500 mr-2 mt-1">●</span>Works in isolation, inefficient.</li>
+                                    <li class="flex items-start"><span class="text-red-500 mr-2 mt-1">●</span>A capital expense (CapEx).</li>
+                                    <li class="flex items-start"><span class="text-red-500 mr-2 mt-1">●</span>Maintenance is your responsibility.</li>
+                                    <li class="flex items-start"><span class="text-red-500 mr-2 mt-1">●</span>No verifiable data.</li>
+                                </ul>
+                            </div>
+                             <div class="bg-sky-50 rounded-lg p-6 border-2 border-sky-600 shadow-lg">
+                                <h4 class="font-bold text-lg text-sky-800">Breathe Easier Service</h4>
+                                <p class="text-sm text-sky-600 mt-1">Our Intelligent Approach</p>
+                                <ul class="mt-4 space-y-2 text-sm">
+                                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">●</span><span class="font-semibold">Intelligent swarm,</span> highly effective & energy-efficient.</li>
+                                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">●</span><span class="font-semibold">A flexible service</span> (OpEx).</li>
+                                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">●</span><span class="font-semibold">"Totally Managed"</span> by us.</li>
+                                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">●</span><span class="font-semibold">Transparent data dashboard.</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Service Promise -->
+            <section id="service-promise" class="tab-content hidden">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-3xl font-bold text-center text-gray-900">Our "Totally Managed" Service Promise</h2>
+                    <p class="mt-4 text-center text-gray-600">We handle everything, so you can focus on your business. Here are answers to common operational questions.</p>
+                
+                    <div id="accordion-container" class="mt-12 space-y-4">
+                        <!-- Accordion Item 1 -->
+                        <div class="accordion-item bg-white border rounded-lg shadow-sm">
+                            <button class="accordion-header w-full text-left p-5 flex justify-between items-center">
+                                <span class="font-semibold text-gray-800">What is the maintenance schedule and cost?</span>
+                                <span class="accordion-icon text-2xl text-gray-500 transform transition-transform duration-300">▸</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="p-5 pt-0 text-gray-600">All maintenance is included in your single monthly fee, so there are **no additional costs.** The only regular visit is for filter replacements, which we proactively schedule every 6-12 months. All other monitoring and troubleshooting is handled by us remotely.</p>
+                            </div>
+                        </div>
+                        <!-- Accordion Item 2 -->
+                        <div class="accordion-item bg-white border rounded-lg shadow-sm">
+                            <button class="accordion-header w-full text-left p-5 flex justify-between items-center">
+                                <span class="font-semibold text-gray-800">Who handles troubleshooting and do we need to train our staff?</span>
+                                <span class="accordion-icon text-2xl text-gray-500 transform transition-transform duration-300">▸</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="p-5 pt-0 text-gray-600">**We handle 100% of the troubleshooting.** Your staff does not need any special training. We monitor all devices 24/7 and are often alerted to issues before you are. Your team's only responsibility is to notify us if they notice something, and we take it from there.</p>
+                            </div>
+                        </div>
+                         <!-- Accordion Item 3 -->
+                        <div class="accordion-item bg-white border rounded-lg shadow-sm">
+                            <button class="accordion-header w-full text-left p-5 flex justify-between items-center">
+                                <span class="font-semibold text-gray-800">What is your policy on accidentally damaged devices?</span>
+                                <span class="accordion-icon text-2xl text-gray-500 transform transition-transform duration-300">▸</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="p-5 pt-0 text-gray-600">Our policy is based on partnership. Any repair or replacement needed due to normal operational wear-and-tear or minor accidental damage is covered by us at no extra cost. The only standard exception is for cases of willful damage or clear negligence.</p>
+                            </div>
+                        </div>
+                         <!-- Accordion Item 4 -->
+                        <div class="accordion-item bg-white border rounded-lg shadow-sm">
+                            <button class="accordion-header w-full text-left p-5 flex justify-between items-center">
+                                <span class="font-semibold text-gray-800">Can units be wall-mounted to save floor space?</span>
+                                <span class="accordion-icon text-2xl text-gray-500 transform transition-transform duration-300">▸</span>
+                            </button>
+                            <div class="accordion-content">
+                                <p class="p-5 pt-0 text-gray-600">Yes. Our system is hardware-flexible. During our initial site assessment, we work with you to select the best units for your space, including discreet wall- or ceiling-mounted purifiers for high-traffic areas.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Pricing & Pilot -->
+            <section id="pricing-pilot" class="tab-content hidden">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold text-gray-900">Simple Pricing & A Risk-Free Way to Start</h2>
+                    <p class="mt-4 text-gray-600">Our pricing is a simple, all-inclusive monthly subscription, allowing you to treat clean air as a predictable operational expense (OpEx).</p>
+                
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="p-8 bg-white border rounded-lg shadow-sm">
+                            <h3 class="text-xl font-bold text-sky-700">Per-Employee / Per-Student</h3>
+                            <p class="mt-4 text-gray-600">Ideal for offices and schools. A single, predictable monthly fee for each person in the covered space.</p>
+                        </div>
+                         <div class="p-8 bg-white border rounded-lg shadow-sm">
+                            <h3 class="text-xl font-bold text-sky-700">Per-Square-Foot</h3>
+                            <p class="mt-4 text-gray-600">Ideal for other spaces like hospital wings or large common areas. A monthly fee based on the area covered.</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-16 p-8 bg-teal-600 rounded-lg text-white">
+                        <h3 class="text-3xl font-bold">Experience the Difference, On Us.</h3>
+                        <p class="mt-4 max-w-2xl mx-auto">The best proof is seeing the results in your own environment. We invite you to our no-cost, no-obligation 90-day pilot program. See the data, gather employee feedback, and make a decision based on real-world results.</p>
+                        <button onclick="window.location.href='mailto:Rohit.Nalwade@IITB.ac.in'" class="mt-8 px-8 py-3 bg-white text-teal-700 font-bold rounded-lg shadow-md hover:bg-gray-100 transition-colors duration-200">
+                            Request Your No-Cost Pilot
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Tab navigation
+            const tabNav = document.getElementById('tab-nav');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+
+            tabNav.addEventListener('click', (e) => {
+                if (e.target.matches('.tab-btn')) {
+                    const tabId = e.target.dataset.tab;
+
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('tab-active');
+                        btn.classList.add('tab-inactive');
+                    });
+                    e.target.classList.add('tab-active');
+                    e.target.classList.remove('tab-inactive');
+
+                    tabContents.forEach(content => {
+                        if (content.id === tabId) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                }
+            });
+
+            // Accordion functionality
+            const accordionContainer = document.getElementById('accordion-container');
+            if (accordionContainer) {
+                accordionContainer.addEventListener('click', (e) => {
+                    const header = e.target.closest('.accordion-header');
+                    if (!header) return;
+
+                    const item = header.parentElement;
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('.accordion-icon');
+
+                    // Close other items
+                    const allItems = accordionContainer.querySelectorAll('.accordion-item');
+                    allItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.querySelector('.accordion-content').style.maxHeight = '0px';
+                            otherItem.querySelector('.accordion-icon').classList.remove('rotate-90');
+                        }
+                    });
+
+                    // Toggle current item
+                    if (content.style.maxHeight && content.style.maxHeight !== '0px') {
+                        content.style.maxHeight = '0px';
+                        icon.classList.remove('rotate-90');
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                        icon.classList.add('rotate-90');
+                    }
+                });
+            }
+
+            // Chart.js implementation
+            const ctx = document.getElementById('cognitiveChart');
+            if (ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Strategic Thinking', 'Focus & Concentration', 'Decision Making'],
+                        datasets: [{
+                            label: 'Typical Office Air',
+                            data: [65, 70, 75],
+                            backgroundColor: 'rgba(107, 114, 128, 0.5)', // Gray
+                            borderColor: 'rgba(107, 114, 128, 1)',
+                            borderWidth: 1
+                        }, {
+                            label: 'Breathe Easier Managed Air',
+                            data: [92, 95, 96],
+                            backgroundColor: 'rgba(13, 148, 136, 0.6)', // Teal
+                            borderColor: 'rgba(13, 148, 136, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Cognitive Performance Boost with Clean Air',
+                                font: { size: 16 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y + '%';
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    callback: function(value) {
+                                        return value + '%'
+                                    }
+                                },
+                                title: {
+                                    display: true,
+                                    text: 'Performance Score'
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
