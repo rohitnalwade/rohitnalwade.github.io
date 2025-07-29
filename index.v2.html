@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breathe Easier for Enterprise | The Future of Healthy Buildings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Professional Blue & Neutral Gray -->
+    <!-- Application Structure Plan: The application is structured as a comprehensive, single-page corporate website. The narrative flow guides a senior executive from a high-level strategic problem (The Invisible Tax on Human Capital) to a clear, data-driven solution (The AQaaS Platform). It includes sections for target industries, technological differentiation, and scientific proof, establishing credibility and authority. This long-scroll format with a sticky navigation is ideal for presenting a detailed business case in a digestible, linear story. -->
+    <!-- Visualization & Content Choices: 1. The Problem: Key stats from research are presented as high-impact 'Big Number' cards. 2. The Solution: The 4-step process is visualized using a clean HTML/CSS diagram. 3. Target Industries: An interactive card layout allows users to explore tailored value propositions. 4. The Science: A dedicated section with clear citations reinforces the evidence-based nature of the service. 5. Competition: A detailed HTML comparison matrix is used for a direct, factual analysis suitable for a B2B audience. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #1e3a8a, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-bg {
+            background-color: #ffffff;
+            background-image: radial-gradient(#e0e7ff 1.5px, transparent 1.5px);
+            background-size: 3rem 3rem;
+        }
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .nav-link.active {
+            color: #1d4ed8;
+            font-weight: 600;
+        }
+        .industry-tab {
+            transition: all 0.3s ease;
+        }
+        .industry-tab-active {
+            background-color: #ffffff;
+            color: #1e3a8a;
+            box-shadow: 0 4px 14px 0 rgb(0 0 0 / 0.05);
+        }
+        .industry-tab-inactive {
+            background-color: transparent;
+            color: #374151;
+        }
+        .industry-tab-content {
+            animation: fadeIn 0.6s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+        .accordion-button svg {
+            transition: transform 0.3s ease;
+        }
+        .accordion-button[aria-expanded="true"] svg {
+            transform: rotate(180deg);
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+        }
+        .comparison-table thead th {
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #475569;
+        }
+        .comparison-table tbody tr {
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .comparison-table tbody tr:last-child {
+            border-bottom: none;
+        }
+        .comparison-table tbody td:first-child {
+            font-weight: 600;
+            color: #1e293b;
+        }
+        .comparison-table .highlight-col {
+            background-color: #eff6ff;
+        }
+        .comparison-table .highlight-col strong {
+            color: #1d4ed8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-700 antialiased">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#home" class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-xl text-white shadow-inner">
+                        🛡️
+                    </div>
+                    <span class="text-xl font-bold text-slate-800">Breathe Easier</span>
+                </a>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <!-- Solution Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center font-semibold text-slate-600 hover:text-blue-700 transition-colors">
+                            <span>Our Solution</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-50 border border-slate-100">
+                            <a href="#problem" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">The Problem</a>
+                            <a href="#solution" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">How It Works</a>
+                            <a href="#why-us" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Our Advantage</a>
+                            <a href="#industries" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Industries</a>
+                        </div>
+                    </div>
+                    <a href="#pricing" class="nav-link font-semibold text-slate-600 hover:text-blue-700 transition-colors">Pricing</a>
+                    <!-- Company Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center font-semibold text-slate-600 hover:text-blue-700 transition-colors">
+                            <span>Company</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </button>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-50 border border-slate-100">
+                            <a href="#story" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Our Story</a>
+                            <a href="#faq" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">FAQ</a>
+                            <a href="#contact" class="nav-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Contact</a>
+                        </div>
+                    </div>
+                </nav>
+                <a href="#pilot" class="hidden md:inline-block bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:bg-blue-800 transition-colors duration-200">
+                    Request a Pilot
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero-bg border-b border-slate-200">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 tracking-tighter">
+                    The OS for <span class="gradient-text">High-Performance</span> Buildings
+                </h1>
+                <p class="mt-6 max-w-3xl mx-auto text-lg text-slate-600 leading-relaxed">
+                    We provide Air Quality-as-a-Service (AQaaS) to unlock the full potential of your most valuable asset—your people. Stop managing hardware. Start managing outcomes.
+                </p>
+                <div class="mt-8 flex justify-center gap-4">
+                     <a href="#pilot" class="bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-200">
+                        Request a No-Cost Pilot
+                    </a>
+                    <a href="#problem" class="bg-white text-slate-700 font-semibold px-8 py-3 rounded-lg border border-slate-300 hover:bg-slate-100 transition-colors duration-200">
+                        Learn More
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Problem Section -->
+        <section id="problem" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center scroll-reveal">
+                    <p class="text-base font-semibold text-blue-700 tracking-wider uppercase">The Strategic Imperative</p>
+                    <h2 class="mt-4 text-3xl font-extrabold text-slate-900 tracking-tight">The Invisible Tax on Human Capital</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
+                        Poor indoor air quality is a hidden operational inefficiency that actively degrades your most valuable asset. It's a measurable drain on cognitive function, a catalyst for poor health, and a significant driver of talent attrition.
+                    </p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="scroll-reveal">
+                        <h3 class="text-2xl font-bold text-slate-900">The Cascade Effect of Poor IAQ</h3>
+                        <p class="mt-3 text-slate-600">The impact of poor air quality is not a single event, but a cascade of compounding negative outcomes that ultimately result in tangible financial loss.</p>
+                        <div class="mt-6 space-y-4">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">1</div>
+                                <div class="ml-4">
+                                    <h4 class="font-semibold text-slate-800">Cognitive & Health Decline</h4>
+                                    <p class="text-sm text-slate-600">Elevated CO₂ and PM2.5 levels directly impair focus, strategic thinking, and respiratory health, creating an underperforming and unwell workforce. <sup>[1, 2]</sup></p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">2</div>
+                                <div class="ml-4">
+                                    <h4 class="font-semibold text-slate-800">Reduced Engagement & Presenteeism</h4>
+                                    <p class="text-sm text-slate-600">Employees who feel chronically fatigued or unwell are physically present but mentally absent, leading to reduced innovation and discretionary effort.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">3</div>
+                                <div class="ml-4">
+                                    <h4 class="font-semibold text-slate-800">Increased Attrition</h4>
+                                    <p class="text-sm text-slate-600">A workplace that is perceived as unhealthy becomes a key reason for top talent to leave, incurring significant recruitment and retraining costs. <sup>[5]</sup></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200 scroll-reveal" style="transition-delay: 150ms;">
+                        <div class="text-center">
+                            <div class="text-6xl">📉</div>
+                            <h4 class="mt-4 text-xl font-bold text-slate-900">The Financial Impact</h4>
+                            <p class="mt-2 text-slate-600">This cascade directly impacts your bottom line through lost productivity, increased healthcare costs, and the high price of replacing valuable employees.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Solution Section -->
+        <section id="solution" class="py-16 md:py-24 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center scroll-reveal">
+                    <p class="text-base font-semibold text-blue-700 tracking-wider uppercase">The AQaaS Platform</p>
+                    <h2 class="mt-4 text-3xl font-extrabold text-slate-900 tracking-tight">How Our Intelligent System Works</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
+                        We shift the paradigm from managing hardware to guaranteeing outcomes. Our service is a continuous, data-driven optimization cycle designed to ensure your environment supports peak health and performance.
+                    </p>
+                </div>
+                <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-x-12 gap-y-16 items-center">
+                    <div class="scroll-reveal">
+                        <div class="space-y-10">
+                            <!-- Step 1 -->
+                            <div class="flex items-center gap-6">
+                                <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow">📡</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-lg">1. Sense: The Sensor Network</h4>
+                                    <p class="text-slate-600 mt-1">We deploy a network of medical-grade sensors that continuously monitor for key pollutants like PM2.5 and CO₂, providing a high-resolution view of your indoor environment.</p>
+                                </div>
+                            </div>
+                            <!-- Step 2 -->
+                            <div class="flex items-center gap-6">
+                                <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow">🧠</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-lg">2. Analyze: The Cloud AI Brain</h4>
+                                    <p class="text-slate-600 mt-1">Data is streamed to our cloud platform, where our AI analyzes patterns, predicts air quality changes, and determines the most efficient response.</p>
+                                </div>
+                            </div>
+                            <!-- Step 3 -->
+                            <div class="flex items-center gap-6">
+                                <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow">💨</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-lg">3. Act: The Purifier Swarm</h4>
+                                    <p class="text-slate-600 mt-1">The AI dispatches commands to a swarm of high-efficiency purifiers, activating them precisely when and where needed to neutralize threats and maintain optimal air quality.</p>
+                                </div>
+                            </div>
+                            <!-- Step 4 -->
+                            <div class="flex items-center gap-6">
+                                <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow">📊</div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-lg">4. Inform: The Dashboard</h4>
+                                    <p class="text-slate-600 mt-1">We provide you with a real-time dashboard, offering transparent proof of performance and the data needed for ESG reporting and stakeholder communication.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll-reveal bg-white p-8 rounded-2xl shadow-lg border border-slate-200" style="transition-delay: 150ms;">
+                         <h3 class="text-2xl font-bold text-slate-900">From Data to Action: A Virtuous Cycle</h3>
+                        <p class="mt-3 text-slate-600">Our platform is not a static installation; it's a dynamic, learning system that delivers compounding benefits:</p>
+                        <ul class="mt-6 space-y-4">
+                            <li><b class="text-slate-800">Data for ESG Reporting:</b> We provide the verifiable data you need for ESG disclosures and to pursue building certifications like WELL and LEED, enhancing your corporate reputation and asset value.</li>
+                            <li><b class="text-slate-800">Operational Efficiency:</b> By cleaning the air only where and when needed, our system is significantly more energy-efficient than brute-force HVAC filtration, leading to direct cost savings.</li>
+                            <li><b class="text-slate-800">Strategic Financial Shift:</b> Our AQaaS model transforms a large, unpredictable capital expense (CapEx) into a simple, all-inclusive operational expense (OpEx), de-risking technology adoption and simplifying budgeting.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Why Us Section (NEW) -->
+        <section id="why-us" class="py-16 md:py-24 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center scroll-reveal">
+                    <p class="text-base font-semibold text-blue-700 tracking-wider uppercase">The Clear Advantage</p>
+                    <h2 class="mt-4 text-3xl font-extrabold text-slate-900 tracking-tight">Why Air Quality-as-a-Service is Different</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
+                        Choosing an air quality solution involves more than just hardware. It's a choice between a capital expense and a strategic investment, between isolated devices and an intelligent system. Here’s how we compare to the alternatives.
+                    </p>
+                </div>
+                <div class="mt-12 scroll-reveal overflow-x-auto">
+                    <div class="bg-white border border-slate-200 rounded-2xl shadow-lg">
+                        <table class="w-full comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Feature</th>
+                                    <th class="highlight-col">Breathe Easier (AQaaS)</th>
+                                    <th>Traditional Purifier Brands</th>
+                                    <th>Large-Scale HVAC Providers</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Model</td>
+                                    <td class="highlight-col"><strong class="block">Managed Service (OpEx)</strong></td>
+                                    <td>Hardware Sale (CapEx)</td>
+                                    <td>System Upgrade (CapEx)</td>
+                                </tr>
+                                <tr>
+                                    <td>Intelligence</td>
+                                    <td class="highlight-col"><strong class="block">Centralized AI, swarm control</strong></td>
+                                    <td>Standalone, isolated devices</td>
+                                    <td>Building-wide, non-granular</td>
+                                </tr>
+                                <tr>
+                                    <td>Energy Efficiency</td>
+                                    <td class="highlight-col"><strong class="block">High (cleans only when needed)</strong></td>
+                                    <td>Low (often runs continuously)</td>
+                                    <td>Moderate to Low</td>
+                                </tr>
+                                <tr>
+                                    <td>Maintenance</td>
+                                    <td class="highlight-col"><strong class="block">Fully included in service</strong></td>
+                                    <td>Client's responsibility</td>
+                                    <td>Complex, specialized contracts</td>
+                                </tr>
+                                <tr>
+                                    <td>Data & Proof</td>
+                                    <td class="highlight-col"><strong class="block">Real-time, transparent dashboard</strong></td>
+                                    <td>None or limited</td>
+                                    <td>Limited, often inaccessible</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                 <div class="mt-10 text-center text-slate-600 scroll-reveal">
+                    <p>The choice is clear: Move beyond managing devices and start managing outcomes with a fully serviced, intelligent system that guarantees results and provides transparent proof of performance.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Our Story Section -->
+        <section id="story" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                    <div class="scroll-reveal">
+                        <p class="text-base font-semibold text-blue-700 tracking-wider uppercase">Our Mission</p>
+                        <h2 class="mt-4 text-3xl font-extrabold text-slate-900 tracking-tight">A Mission Forged by Expertise</h2>
+                        <p class="mt-6 text-lg text-slate-600 leading-relaxed">
+                            Our founder's journey began not in a boardroom, but in the trenches of air purification technology. Having led the team that designed India's first IoT-enabled air purifiers for a major international brand, he saw a fundamental gap: the industry was selling hardware, but customers needed a guaranteed health outcome.
+                        </p>
+                        <p class="mt-4 text-lg text-slate-600 leading-relaxed">
+                            This professional insight became a personal mission after seeing his young niece's asthma worsen in her school environment. The realization was clear: the solution wasn't another device, but an intelligent, managed service. Breathe Easier was founded to bridge that gap, combining deep technical expertise with a powerful, personal drive to create verifiably healthy indoor spaces.
+                        </p>
+                    </div>
+                    <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200 scroll-reveal" style="transition-delay: 150ms;">
+                        <h3 class="text-2xl font-bold text-slate-900">Our Technical Edge</h3>
+                        <p class="mt-3 text-slate-600">Our mission is backed by deep, hands-on expertise in building and validating air quality systems at scale.</p>
+                        <ul class="mt-6 space-y-4">
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">✔</div>
+                                <p class="ml-4 text-slate-700"><b class="text-slate-900">End-to-End System Design:</b> Proven experience designing the complete IoT stack (hardware, cloud, apps) for commercial air purifiers.</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">✔</div>
+                                <p class="ml-4 text-slate-700"><b class="text-slate-900">Rigorous Validation Protocols:</b> Deep, first-hand experience with the testing protocols required to validate systems against both Indian and stringent EU standards.</p>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">✔</div>
+                                <p class="ml-4 text-slate-700"><b class="text-slate-900">Supply Chain Expertise:</b> Established connections and deep knowledge of the supply chain for high-quality filters, purifiers, and critical components.</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Industries Section -->
+        <section id="industries" class="py-16 md:py-24 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center scroll-reveal">
+                    <p class="text-base font-semibold text-blue-700 tracking-wider uppercase">Industry Briefings</p>
+                    <h2 class="mt-4 text-3xl font-extrabold text-slate-900 tracking-tight">A Strategic Asset for Your Sector</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
+                        Clean air is not a perk; it's a performance driver. Select your industry to see a detailed briefing on how our AQaaS platform addresses your specific challenges and delivers measurable ROI.
+                    </p>
+                </div>
+                <div class="mt-12 scroll-reveal">
+                    <div class="max-w-2xl mx-auto flex justify-center items-center bg-slate-100 p-1.5 rounded-xl" id="industry-tab-nav">
+                        <button data-tab="corporate" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-active">Corporate</button>
+                        <button data-tab="education" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-inactive">Education</button>
+                        <button data-tab="healthcare" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-inactive">Healthcare</button>
+                    </div>
+                </div>
+                <div class="mt-8 max-w-5xl mx-auto">
+                    <!-- Corporate Briefing -->
+                    <div id="corporate" class="industry-tab-content">
+                        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-slate-200">
+                            <h3 class="text-2xl font-bold text-slate-900">Briefing: The High-Performance Workplace</h3>
+                            <p class="mt-4 text-slate-600">For CHROs, CFOs, and COOs, the office is no longer just a space—it's a strategic tool for talent retention, productivity, and brand expression. A healthy building is foundational to a high-performing organization.</p>
+                            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800">Win the War for Talent</h4>
+                                        <p class="text-sm text-slate-600">In a hybrid world, a verifiably healthy office is a powerful differentiator. It strengthens your Employer Value Proposition (EVP) and becomes a compelling reason for top talent to choose you and to come to the office.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800">Unlock Cognitive Capital</h4>
+                                        <p class="text-sm text-slate-600">Elevated CO₂ directly impairs strategic thinking. By optimizing air quality, you are directly investing in the clarity, focus, and innovative capacity of your team—your most valuable asset.</p>
+                                    </div>
+                                     <div>
+                                        <h4 class="font-semibold text-slate-800">De-risk & Boost ESG Metrics</h4>
+                                        <p class="text-sm text-slate-600">Shift from CapEx to a predictable OpEx model. Our verifiable data supports ESG reporting (GRESB, etc.) and building certifications (WELL, LEED), enhancing asset value and corporate reputation.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 p-6 rounded-xl border">
+                                    <h4 class="font-semibold text-center text-slate-800 mb-4">AQaaS Value Proposition Matrix</h4>
+                                    <div class="grid grid-cols-3 gap-2 text-center text-xs font-semibold">
+                                        <div class="bg-blue-100 text-blue-800 p-2 rounded">FOR THE CHRO</div>
+                                        <div class="bg-green-100 text-green-800 p-2 rounded">FOR THE CFO</div>
+                                        <div class="bg-indigo-100 text-indigo-800 p-2 rounded">FOR THE COO</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">Reduced Attrition</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">CapEx to OpEx</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">Reduced Sick Days</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">Enhanced EVP</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">Energy Savings</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">Higher Productivity</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">Improved Wellness</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">Enhanced Asset Value</div>
+                                        <div class="border p-2 rounded-lg text-slate-700">ESG Data</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <blockquote class="mt-10 border-l-4 border-blue-600 pl-6 italic text-slate-600">
+                                <p>"Improving workplace air quality... can significantly boost employee productivity... by up to 15%."</p>
+                                <cite class="mt-2 block text-right text-sm not-italic text-slate-500">– Confederation of British Industry (CBI) <sup>[6]</sup></cite>
+                            </blockquote>
+                        </div>
+                    </div>
+                    <!-- Education Briefing -->
+                    <div id="education" class="industry-tab-content hidden">
+                        <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-slate-200">
+                            <h3 class="text-2xl font-bold text-slate-900">Briefing: The Optimal Learning Environment</h3>
+                            <p class="mt-4 text-slate-600">For Principals and Trustees, the physical school environment is an active participant in the educational process. Air quality directly impacts the core mission: student achievement and staff effectiveness.</p>
+                            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800">Boost Academic Outcomes</h4>
+                                        <p class="text-sm text-slate-600">Research confirms a direct link between lower CO₂ levels and improved student concentration and test scores. Reducing airborne allergens and pathogens also minimizes health-related absenteeism. <sup>[1]</sup></p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800">Support Teacher & Staff Wellness</h4>
+                                        <p class="text-sm text-slate-600">A healthy environment is critical for retaining high-quality educators. Reducing staff sick days and demonstrating a tangible commitment to their well-being improves morale and reduces operational disruption.</p>
+                                    </div>
+                                     <div>
+                                        <h4 class="font-semibold text-slate-800">Build Parental Confidence</h4>
+                                        <p class="text-sm text-slate-600">In a competitive market, a verifiably healthy school is a powerful differentiator. It provides parents with tangible proof of your commitment to student safety and well-being, strengthening your school's reputation and enrollment prospects.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 p-4 rounded-xl border">
+                                    <div class="chart-container relative h-64 w-full max-w-md mx-auto">
+                                        <canvas id="educationChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Healthcare Briefing -->
+                    <div id="healthcare" class="industry-tab-content hidden">
+                         <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-slate-200">
+                            <h3 class="text-2xl font-bold text-slate-900">Briefing: Patient Safety & Staff Resilience</h3>
+                            <p class="mt-4 text-slate-600">For Hospital CEOs and CMOs, managing risk while enhancing the patient experience is paramount. Air quality in non-clinical areas is a critical, often-underestimated component of a comprehensive safety and quality strategy.</p>
+                            <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                <div class="space-y-6">
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800">Reduce HAI & Cross-Contamination Risk</h4>
+                                        <p class="text-sm text-slate-600">Targeted HEPA filtration in high-traffic waiting and consultation areas helps capture airborne pathogens, complementing clinical infection control protocols and reducing the risk of Hospital-Acquired Infections (HAIs). <sup>[4]</sup></p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800">Improve HCAHPS & Patient Perception</h4>
+                                        <p class="text-sm text-slate-600">A clean, odor-free environment is a key driver of patient satisfaction. A visible commitment to air quality directly impacts the "Cleanliness of Hospital Environment" metric in HCAHPS surveys, boosting scores and reputation.</p>
+                                    </div>
+                                     <div>
+                                        <h4 class="font-semibold text-slate-800">Protect Your Clinical Workforce</h4>
+                                        <p class="text-sm text-slate-600">Healthcare staff face significant occupational airborne risks. Investing in clean air is a direct investment in their health and safety, helping to reduce burnout, absenteeism, and turnover in your most critical asset.</p>
+                                    </div>
+                                </div>
+                                <div class="bg-slate-50 p-6 rounded-xl border">
+                                    <h4 class="font-semibold text-center text-slate-800 mb-4">AQaaS Risk Mitigation Framework</h4>
+                                    <div class="space-y-4">
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">✔</div>
+                                            <div class="ml-3">
+                                                <p class="font-semibold text-slate-800">Pathogen Transmission</p>
+                                                <p class="text-xs text-slate-600">Reduces airborne viral & bacterial load in common areas.</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">✔</div>
+                                            <div class="ml-3">
+                                                <p class="font-semibold text-slate-800">Negative Patient Perception</p>
+                                                <p class="text-xs text-slate-600">Improves satisfaction scores via a visibly clean environment.</p>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-start">
+                                            <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">✔</div>
+                                            <div class="ml-3">
+                                                <p class="font-semibold text-slate-800">Staff Health & Burnout</p>
+                                                <p class="text-xs text-slate-600">Lowers occupational health risks, supporting staff retention.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing & Pilot Section (NEW) -->
+        <section id="pricing" class="py-16 md:py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center scroll-reveal">
+                    <p class="text-base font-semibold text-blue-700 tracking-wider uppercase">Simple, Transparent Pricing</p>
+                    <h2 class="mt-4 text-3xl font-extrabold text-slate-900 tracking-tight">A Model That Aligns With Your Goals</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
+                        Our pricing is designed to be simple, predictable, and directly tied to the value we provide. Choose the model that best fits your organization's structure.
+                    </p>
+                </div>
+                <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Per-Employee / Per-Student Card -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 text-center scroll-reveal">
+                        <h3 class="text-2xl font-bold text-slate-900">Per-Employee / Per-Student</h3>
+                        <p class="mt-4 text-slate-600">Ideal for offices and schools. A single, predictable monthly fee for each person in the covered space.</p>
+                    </div>
+                    <!-- Per-Square-Foot Card -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 text-center scroll-reveal" style="transition-delay: 150ms;">
+                        <h3 class="text-2xl font-bold text-slate-900">Per-Square-Foot</h3>
+                        <p class="mt-4 text-slate-600">Ideal for other spaces like hospital wings or large common areas. A monthly fee based on the area covered.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section id="pilot" class="py-16 md:py-24 bg-slate-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="bg-blue-800 rounded-2xl p-12 text-center text-white shadow-2xl scroll-reveal">
+                    <h2 class="text-4xl font-extrabold tracking-tight">Prove it to Yourself. On Us.</h2>
+                    <p class="mt-4 max-w-2xl mx-auto text-blue-100">The most powerful data is your own. We invite you to a no-cost, 90-day pilot program to measure the impact of clean air on your own team and in your own building.</p>
+                    <div class="mt-8">
+                        <a href="mailto:info@breatheasier.com" class="inline-block bg-white text-blue-800 font-bold px-10 py-4 rounded-lg shadow-lg hover:bg-slate-100 transform hover:scale-105 transition-all duration-300">
+                            Request a No-Cost Pilot
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- FAQ Section -->
+        <section id="faq" class="py-16 md:py-24 bg-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center scroll-reveal">
+                    <p class="text-base font-semibold text-blue-700 tracking-wider uppercase">Common Questions</p>
+                    <h2 class="mt-4 text-3xl font-extrabold text-slate-900 tracking-tight">Frequently Asked Questions</h2>
+                    <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
+                        Answering your key questions about our service, technology, and business model.
+                    </p>
+                </div>
+                <div class="mt-12 space-y-4 scroll-reveal" id="faq-accordion">
+                    <!-- FAQ Item 1 -->
+                    <div class="border border-slate-200 rounded-lg">
+                        <h2>
+                            <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
+                                <span>What exactly is "Air Quality-as-a-Service" (AQaaS)?</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                        </h2>
+                        <div class="accordion-content">
+                            <div class="p-6 pt-0 text-slate-600">
+                                <p>AQaaS is a business model where you pay a subscription for a guaranteed outcome—clean air—instead of buying and managing hardware. Our all-inclusive service covers state-of-the-art sensors, purification units, proactive maintenance, filter replacements, and detailed performance reporting. We take on the operational burden so you can focus on the benefits.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FAQ Item 2 -->
+                    <div class="border border-slate-200 rounded-lg">
+                        <h2>
+                            <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
+                                <span>How does the no-cost pilot program work?</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                        </h2>
+                        <div class="accordion-content">
+                            <div class="p-6 pt-0 text-slate-600">
+                                <p>Our 90-day, no-cost, no-obligation pilot is designed to build a business case using your own data. We'll install our system in a designated area of your building to establish a baseline, deploy our solution, and measure the improvement. You'll receive a comprehensive report detailing the impact on air quality and correlating it to metrics like cognitive performance and employee wellness.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FAQ Item 3 -->
+                    <div class="border border-slate-200 rounded-lg">
+                        <h2>
+                            <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
+                                <span>How does your system impact our energy consumption?</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                        </h2>
+                        <div class="accordion-content">
+                            <div class="p-6 pt-0 text-slate-600">
+                                <p>Our system is designed for energy efficiency. Unlike traditional HVAC systems that often run constantly, our intelligent platform uses real-time data to activate purification only when and where it's needed. This targeted approach significantly reduces energy consumption compared to brute-force filtration, leading to direct operational cost savings.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- FAQ Item 4 -->
+                    <div class="border border-slate-200 rounded-lg">
+                        <h2>
+                            <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
+                                <span>What about using plants or "living walls" instead of technology?</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                        </h2>
+                        <div class="accordion-content">
+                            <div class="p-6 pt-0 text-slate-600">
+                                <p>While plants are excellent for aesthetics and psychological well-being, they are not an effective solution for removing the most harmful airborne pollutants in a typical office or school. The difference between biology and engineered technology is significant:</p>
+                                <ul class="mt-4 space-y-3 list-disc list-inside">
+                                    <li><b>Ineffective Scale for Particle Removal:</b> To match the air cleaning rate of a standard building's ventilation system, you would need an impractical 100 to 1,000 plants per square meter. This doesn't even approach the efficacy of a high-efficiency HEPA filter. <sup>[7]</sup></li>
+                                    <li><b>Risk of Contamination:</b> Poorly maintained plant soil can become a breeding ground for mold and bacteria, inadvertently introducing new biological contaminants into your environment.</li>
+                                    <li><b>Proven HEPA Efficacy:</b> In contrast, the True HEPA filters in our service are certified to capture over 99.97% of harmful airborne particles, including dust, germs, and viruses on droplets, in a single pass.</li>
+                                </ul>
+                                <p class="mt-4 font-semibold">The Bottom Line: For a verifiably healthy indoor environment, engineered HEPA filtration is the only solution that provides the necessary efficacy, reliability, and measurable performance.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <!-- FAQ Item 5 (NEW) -->
+                    <div class="border border-slate-200 rounded-lg">
+                        <h2>
+                            <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
+                                <span>Which specific airborne pathogens can your system filter?</span>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                        </h2>
+                        <div class="accordion-content">
+                            <div class="p-6 pt-0 text-slate-600">
+                                <p>Our service uses purifiers with True HEPA filters, which are certified to capture 99.97% of particles at 0.3 microns (µm). Due to the physics of filtration (interception, impaction, and diffusion), they are highly effective across a broad spectrum of particle sizes, including microbiologicals. <sup>[4]</sup></p>
+                                <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800">Bacteria Filtration</h4>
+                                        <p class="text-sm">Most airborne bacteria (typically 0.5-5.0 µm) are well within the capture range, including pathogens like Staphylococcus, Streptococcus, and the droplet nuclei that carry Mycobacterium tuberculosis.</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-slate-800">Virus Filtration</h4>
+                                        <p class="text-sm">While individual viruses are tiny (~0.1 µm), they travel on much larger respiratory droplets and aerosols that are easily captured. For the smallest free-floating particles, a mechanism called diffusion ensures they collide with and are captured by the filter fibers. This makes our system effective against Influenza, Coronaviruses (like SARS-CoV-2), and Rhinoviruses.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sources Section -->
+        <section class="py-16 bg-slate-50 border-t border-slate-200">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 scroll-reveal">
+                <h2 class="text-2xl font-bold text-center text-slate-900 tracking-tight">Our Approach is Grounded in Science</h2>
+                <div class="mt-8 text-sm text-slate-600 space-y-4">
+                    <p><b>[1] Schools for Health: Foundations for Student Success.</b> Joseph G. Allen et al., Harvard T.H. Chan School of Public Health. This report synthesizes over 200 studies on how school buildings impact student health and performance.</p>
+                    <p><b>[2] Acute effects of ambient PM2.5 on lung function among schoolchildren.</b> Dandan Xu et al., *Scientific Reports*, 10, 4061 (2020). A study quantifying the immediate negative impact of PM2.5 exposure on children's lung capacity.</p>
+                    <p><b>[4] Air Cleaners, HVAC Filters, and Coronavirus (COVID-19).</b> U.S. Environmental Protection Agency. This official guidance confirms that HEPA filtration is an effective strategy for reducing airborne contaminants, including viruses.</p>
+                    <p><b>[5] The High Cost of a Toxic Workplace Culture.</b> MIT Sloan Management Review. This research quantifies the link between a toxic culture (of which a poor physical environment is a component) and employee attrition.</p>
+                    <p><b>[6] Air quality in the workplace.</b> Confederation of British Industry (CBI), 24 May 2024. An analysis on the economic benefits of improving indoor air quality.</p>
+                    <p><b>[7] Potted plants do not improve indoor air quality: a review and analysis of the evidence.</b> Bryan E. Cummings & Michael S. Waring, *Journal of Exposure Science & Environmental Epidemiology*, 29, (2019). A meta-analysis concluding that the long-term impact of potted plants on indoor air quality is negligible.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-slate-900 text-slate-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div class="md:col-span-1">
+                     <a href="#home" class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-xl text-white">
+                            🛡️
+                        </div>
+                        <span class="text-xl font-bold text-white">Breathe Easier</span>
+                    </a>
+                    <p class="mt-4 text-sm text-slate-400">Making every indoor space a healthy and high-performing environment through intelligent, data-driven air quality management.</p>
+                </div>
+                <div>
+                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Solution</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#problem" class="text-slate-400 hover:text-white">The Problem</a></li>
+                        <li><a href="#solution" class="text-slate-400 hover:text-white">How It Works</a></li>
+                        <li><a href="#why-us" class="text-slate-400 hover:text-white">Our Advantage</a></li>
+                        <li><a href="#industries" class="text-slate-400 hover:text-white">Industries</a></li>
+                    </ul>
+                </div>
+                 <div>
+                    <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li><a href="#story" class="text-slate-400 hover:text-white">Our Story</a></li>
+                        <li><a href="#pricing" class="text-slate-400 hover:text-white">Pricing</a></li>
+                        <li><a href="#faq" class="text-slate-400 hover:text-white">FAQ</a></li>
+                        <li><a href="#contact" class="text-slate-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                     <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Contact Us</h3>
+                    <ul class="mt-4 space-y-2">
+                        <li class="text-slate-400">Navi Mumbai, Maharashtra, India</li>
+                        <li><a href="mailto:info@breatheasier.com" class="text-slate-400 hover:text-white">info@breatheasier.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-16 border-t border-slate-700 pt-8 text-center text-sm text-slate-500">
+                <p>&copy; 2025 Breathe Easier. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Scroll reveal animation observer
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                scrollObserver.observe(el);
+            });
+
+            // Navigation link highlighting observer
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section, footer');
+
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === `#${id}`) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-40% 0px -60% 0px' });
+
+            document.querySelectorAll('section[id]').forEach(section => {
+                navObserver.observe(section);
+            });
+
+            // Industry Tabs
+            const industryTabNav = document.getElementById('industry-tab-nav');
+            const industryTabContents = document.querySelectorAll('.industry-tab-content');
+            const industryTabButtons = document.querySelectorAll('.industry-tab');
+            let educationChart = null; // Changed from cognitiveChart to be more specific
+
+            // Chart for Education Tab
+            const initEducationChart = () => {
+                const ctx = document.getElementById('educationChart');
+                if (!ctx) return;
+                if (educationChart) educationChart.destroy();
+                educationChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Student Health & Attendance', 'Cognitive Environment', 'Teacher Effectiveness'],
+                        datasets: [{
+                            label: 'Impact of Clean Air',
+                            data: [40, 35, 25],
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.7)',
+                                'rgba(29, 78, 216, 0.7)',
+                                'rgba(165, 180, 252, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(29, 78, 216, 1)',
+                                'rgba(165, 180, 252, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Key Drivers of Educational Excellence',
+                                font: { family: "'Inter', sans-serif", size: 14, weight: '600' },
+                                color: '#1e293b'
+                            }
+                        }
+                    }
+                });
+            };
+            
+            // Event listener for tabs
+            if(industryTabNav) {
+                industryTabNav.addEventListener('click', (e) => {
+                    if (e.target.matches('.industry-tab')) {
+                        const tabId = e.target.dataset.tab;
+                        industryTabButtons.forEach(btn => {
+                            btn.classList.remove('industry-tab-active');
+                            btn.classList.add('industry-tab-inactive');
+                        });
+                        e.target.classList.add('industry-tab-active');
+                        e.target.classList.remove('industry-tab-inactive');
+
+                        industryTabContents.forEach(content => {
+                            content.classList.toggle('hidden', content.id !== tabId);
+                        });
+
+                        // Initialize chart only when its tab is active
+                        if (tabId === 'education') {
+                            setTimeout(initEducationChart, 50); // Timeout to allow tab content to be visible
+                        }
+                    }
+                });
+            }
+            
+            // FAQ Accordion
+            const accordion = document.getElementById('faq-accordion');
+            if(accordion) {
+                accordion.addEventListener('click', (e) => {
+                    const button = e.target.closest('.accordion-button');
+                    if (button) {
+                        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                        button.setAttribute('aria-expanded', !isExpanded);
+                        const content = button.parentElement.nextElementSibling;
+                        if (!isExpanded) {
+                            content.style.maxHeight = content.scrollHeight + 'px';
+                        } else {
+                            content.style.maxHeight = '0px';
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
