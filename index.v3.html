@@ -6,8 +6,6 @@
     <title>Breathe Easier for Enterprise | The Future of Healthy Buildings</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Polyfill for older browsers -->
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6,IntersectionObserver"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -97,6 +95,7 @@
         .comparison-table .highlight-col strong {
             color: #1d4ed8;
         }
+
         /* Dashboard Specific Styles */
         #dashboard-content ::-webkit-scrollbar { width: 8px; }
         #dashboard-content ::-webkit-scrollbar-track { background: #F8FAFC; border-radius: 10px; }
@@ -124,242 +123,57 @@
         .filter-btn { padding: 6px 12px; border-radius: 6px; font-size: 0.875rem; font-weight: 500; cursor: pointer; transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; }
         .filter-btn.active { background-color: #0369A1; color: white; }
         .filter-btn:not(.active) { background-color: #E2E8F0; color: #4B5563; }
-        #login-error {
-            color: #EF4444;
-            font-size: 0.875rem;
-            height: 1.25rem;
-            transition: opacity 0.2s ease-in-out;
-        }
-        /* Loading spinner styles */
-        .spinner {
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top: 3px solid white;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        /* Dropdown menu styles */
-        .dropdown {
-            position: relative;
-        }
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background-color: white;
-            min-width: 200px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            border-radius: 0.375rem;
-            z-index: 50;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
-            margin-top: 0.5rem;
-        }
-        .dropdown.active .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            font-weight: 600;
-            color: #4b5563;
-            transition: color 0.2s;
-        }
-        .dropdown-toggle:hover {
-            color: #1d4ed8;
-        }
-        .dropdown-menu a {
-            display: block;
-            padding: 0.5rem 1rem;
-            color: #4b5563;
-            text-decoration: none;
-            transition: background-color 0.2s, color 0.2s;
-        }
-        .dropdown-menu a:hover {
-            background-color: #f3f4f6;
-            color: #1d4ed8;
-        }
-        /* Mobile menu styles */
-        .mobile-menu-button {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 80%;
-            max-width: 300px;
-            height: 100%;
-            background-color: white;
-            box-shadow: -4px 0 6px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: right 0.3s ease;
-            overflow-y: auto;
-        }
-        .mobile-menu.active {
-            right: 0;
-        }
-        .mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-        }
-        .mobile-menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-        @media (max-width: 767px) {
-            .mobile-menu-button {
-                display: block;
-            }
-            .desktop-nav {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-700 antialiased">
+
     <!-- Header -->
     <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-lg border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <a href="#home" class="flex items-center gap-3 main-link" aria-label="Breathe Easier Home">
-                    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-xl text-white shadow-inner" aria-hidden="true">
+                <a href="#home" class="flex items-center gap-3 main-link">
+                    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-xl text-white shadow-inner">
                         🛡️
                     </div>
                     <span class="text-xl font-bold text-slate-800">Breathe Easier</span>
                 </a>
-                
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex items-center space-x-8 desktop-nav" aria-label="Main navigation">
+                <nav class="hidden md:flex items-center space-x-8">
                     <!-- Solution Dropdown -->
-                    <div class="dropdown" id="solution-dropdown">
-                        <button class="dropdown-toggle py-2" aria-expanded="false" aria-haspopup="true">
+                    <div class="relative group">
+                        <button class="flex items-center font-semibold text-slate-600 hover:text-blue-700 transition-colors">
                             <span>Our Solution</span>
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        <div class="dropdown-menu" role="menu">
-                            <a href="#problem" class="nav-link main-link" role="menuitem">The Problem</a>
-                            <a href="#solution" class="nav-link main-link" role="menuitem">How It Works</a>
-                            <a href="#why-us" class="nav-link main-link" role="menuitem">Our Advantage</a>
-                            <a href="#industries" class="nav-link main-link" role="menuitem">Industries</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-50 border border-slate-100">
+                            <a href="#problem" class="nav-link main-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">The Problem</a>
+                            <a href="#solution" class="nav-link main-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">How It Works</a>
+                            <a href="#why-us" class="nav-link main-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Our Advantage</a>
+                            <a href="#industries" class="nav-link main-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Industries</a>
                         </div>
                     </div>
                     <a href="#pricing" class="nav-link main-link font-semibold text-slate-600 hover:text-blue-700 transition-colors">Pricing</a>
-                    <a href="#" id="dashboard-link" class="font-semibold text-slate-600 hover:text-blue-700 transition-colors">Dashboard</a>
+                    <a href="#dashboard" id="dashboard-link" class="font-semibold text-slate-600 hover:text-blue-700 transition-colors">Dashboard</a>
                     <!-- Company Dropdown -->
-                    <div class="dropdown" id="company-dropdown">
-                        <button class="dropdown-toggle py-2" aria-expanded="false" aria-haspopup="true">
+                    <div class="relative group">
+                        <button class="flex items-center font-semibold text-slate-600 hover:text-blue-700 transition-colors">
                             <span>Company</span>
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                            </svg>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                         </button>
-                        <div class="dropdown-menu" role="menu">
-                            <a href="#story" class="nav-link main-link" role="menuitem">Our Story</a>
-                            <a href="#testimonials" class="nav-link main-link" role="menuitem">Testimonials</a>
-                            <a href="#faq" class="nav-link main-link" role="menuitem">FAQ</a>
-                            <a href="#contact" class="nav-link main-link" role="menuitem">Contact</a>
+                        <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 py-2 w-48 z-50 border border-slate-100">
+                            <a href="#story" class="nav-link main-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Our Story</a>
+                            <a href="#testimonials" class="nav-link main-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Testimonials</a>
+                            <a href="#faq" class="nav-link main-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">FAQ</a>
+                            <a href="#contact" class="nav-link main-link block px-4 py-2 text-slate-600 hover:bg-slate-50 hover:text-blue-700">Contact</a>
                         </div>
                     </div>
                 </nav>
-                
-                <div class="flex items-center space-x-4">
-                    <button class="book-pilot-btn hidden md:inline-block bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:bg-blue-800 transition-colors duration-200" aria-label="Book a Free Pilot">
-                        Book a Free Pilot
-                    </button>
-                    <!-- Mobile menu button -->
-                    <button class="mobile-menu-button md:hidden" aria-label="Toggle mobile menu">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                        </svg>
-                    </button>
-                </div>
+                <button class="book-pilot-btn hidden md:inline-block bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:bg-blue-800 transition-colors duration-200">
+                    Book a Free Pilot
+                </button>
             </div>
         </div>
     </header>
-    
-    <!-- Mobile Menu -->
-    <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-    <div class="mobile-menu" id="mobile-menu">
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-8">
-                <a href="#home" class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-xl text-white">
-                        🛡️
-                    </div>
-                    <span class="text-xl font-bold text-slate-800">Breathe Easier</span>
-                </a>
-                <button class="mobile-menu-close" aria-label="Close mobile menu">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                    </svg>
-                </button>
-            </div>
-            
-            <nav class="space-y-4">
-                <div class="mobile-dropdown">
-                    <button class="flex items-center justify-between w-full py-2 font-semibold text-slate-600" aria-expanded="false">
-                        <span>Our Solution</span>
-                        <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div class="pl-4 mt-2 space-y-2 hidden">
-                        <a href="#problem" class="block py-1 text-slate-600">The Problem</a>
-                        <a href="#solution" class="block py-1 text-slate-600">How It Works</a>
-                        <a href="#why-us" class="block py-1 text-slate-600">Our Advantage</a>
-                        <a href="#industries" class="block py-1 text-slate-600">Industries</a>
-                    </div>
-                </div>
-                
-                <a href="#pricing" class="block py-2 font-semibold text-slate-600">Pricing</a>
-                <a href="#" id="dashboard-link-mobile" class="block py-2 font-semibold text-slate-600">Dashboard</a>
-                
-                <div class="mobile-dropdown">
-                    <button class="flex items-center justify-between w-full py-2 font-semibold text-slate-600" aria-expanded="false">
-                        <span>Company</span>
-                        <svg class="w-4 h-4 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                        </svg>
-                    </button>
-                    <div class="pl-4 mt-2 space-y-2 hidden">
-                        <a href="#story" class="block py-1 text-slate-600">Our Story</a>
-                        <a href="#testimonials" class="block py-1 text-slate-600">Testimonials</a>
-                        <a href="#faq" class="block py-1 text-slate-600">FAQ</a>
-                        <a href="#contact" class="block py-1 text-slate-600">Contact</a>
-                    </div>
-                </div>
-                
-                <button class="book-pilot-btn w-full bg-blue-700 text-white font-semibold px-5 py-2.5 rounded-lg shadow-sm hover:bg-blue-800 transition-colors duration-200">
-                    Book a Free Pilot
-                </button>
-            </nav>
-        </div>
-    </div>
-    
+
     <div id="main-content">
         <main>
             <!-- Hero Section -->
@@ -372,7 +186,7 @@
                         Track, improve, and maintain healthy indoor air — powered by AI, backed by science. We deliver a guaranteed outcome, not just hardware.
                     </p>
                     <div class="mt-8 flex justify-center gap-4">
-                         <button class="book-pilot-btn bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-200" aria-label="Book a Free Pilot">
+                         <button class="book-pilot-btn bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:bg-blue-800 transition-colors duration-200">
                             Book a Free Pilot
                         </button>
                         <a href="#solution" class="bg-white text-slate-700 font-semibold px-8 py-3 rounded-lg border border-slate-300 hover:bg-slate-100 transition-colors duration-200">
@@ -398,6 +212,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- The Problem Section -->
             <section id="problem" class="py-16 md:py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -414,21 +229,21 @@
                             <p class="mt-3 text-slate-600">The impact of poor air quality is not a single event, but a cascade of compounding negative outcomes that ultimately result in tangible financial loss.</p>
                             <div class="mt-6 space-y-4">
                                 <div class="flex items-start">
-                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold" aria-hidden="true">1</div>
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">1</div>
                                     <div class="ml-4">
                                         <h4 class="font-semibold text-slate-800">Cognitive & Health Decline</h4>
                                         <p class="text-sm text-slate-600">Elevated CO₂ and PM2.5 levels directly impair focus, strategic thinking, and respiratory health, creating an underperforming and unwell workforce. <sup>[1, 2]</sup></p>
                                     </div>
                                 </div>
                                 <div class="flex items-start">
-                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold" aria-hidden="true">2</div>
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">2</div>
                                     <div class="ml-4">
                                         <h4 class="font-semibold text-slate-800">Reduced Engagement & Presenteeism</h4>
                                         <p class="text-sm text-slate-600">Employees who feel chronically fatigued or unwell are physically present but mentally absent, leading to reduced innovation and discretionary effort.</p>
                                     </div>
                                 </div>
                                 <div class="flex items-start">
-                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold" aria-hidden="true">3</div>
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-red-100 text-red-700 flex items-center justify-center font-bold">3</div>
                                     <div class="ml-4">
                                         <h4 class="font-semibold text-slate-800">Increased Attrition</h4>
                                         <p class="text-sm text-slate-600">A workplace that is perceived as unhealthy becomes a key reason for top talent to leave, incurring significant recruitment and retraining costs. <sup>[5]</sup></p>
@@ -438,7 +253,7 @@
                         </div>
                         <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200 scroll-reveal" style="transition-delay: 150ms;">
                             <div class="text-center">
-                                <div class="text-6xl" aria-hidden="true">📉</div>
+                                <div class="text-6xl">📉</div>
                                 <h4 class="mt-4 text-xl font-bold text-slate-900">The Financial Impact</h4>
                                 <p class="mt-2 text-slate-600">This cascade directly impacts your bottom line through lost productivity, increased healthcare costs, and the high price of replacing valuable employees.</p>
                             </div>
@@ -446,6 +261,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- The Solution Section -->
             <section id="solution" class="py-16 md:py-24 bg-slate-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -461,7 +277,7 @@
                             <div class="space-y-10">
                                 <!-- Step 1 -->
                                 <div class="flex items-center gap-6">
-                                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow" aria-hidden="true">📡</div>
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow">📡</div>
                                     <div>
                                         <h4 class="font-bold text-slate-800 text-lg">1. Sense: The Sensor Network</h4>
                                         <p class="text-slate-600 mt-1">We deploy a network of medical-grade sensors that continuously monitor for key pollutants like PM2.5 and CO₂, as well as room occupancy, providing a high-resolution view of your indoor environment.</p>
@@ -469,7 +285,7 @@
                                 </div>
                                 <!-- Step 2 -->
                                 <div class="flex items-center gap-6">
-                                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow" aria-hidden="true">🧠</div>
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow">🧠</div>
                                     <div>
                                         <h4 class="font-bold text-slate-800 text-lg">2. Analyze: The Cloud AI Brain</h4>
                                         <p class="text-slate-600 mt-1">Data is streamed to our cloud platform, where our AI analyzes patterns, predicts air quality changes, and determines the most efficient response.</p>
@@ -477,7 +293,7 @@
                                 </div>
                                 <!-- Step 3 -->
                                 <div class="flex items-center gap-6">
-                                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow" aria-hidden="true">💨</div>
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow">💨</div>
                                     <div>
                                         <h4 class="font-bold text-slate-800 text-lg">3. Act: The Purifier Swarm</h4>
                                         <p class="text-slate-600 mt-1">The AI dispatches commands to a swarm of high-efficiency purifiers, activating them precisely when and where needed to neutralize threats and maintain optimal air quality.</p>
@@ -485,7 +301,7 @@
                                 </div>
                                 <!-- Step 4 -->
                                 <div class="flex items-center gap-6">
-                                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow" aria-hidden="true">📊</div>
+                                    <div class="flex-shrink-0 w-16 h-16 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl shadow">📊</div>
                                     <div>
                                         <h4 class="font-bold text-slate-800 text-lg">4. Inform: The Dashboard</h4>
                                         <p class="text-slate-600 mt-1">We provide you with a real-time dashboard, offering transparent proof of performance and the data needed for ESG reporting and stakeholder communication.</p>
@@ -513,7 +329,7 @@
                         <p class="text-base font-semibold text-blue-700 tracking-wider uppercase">The Clear Advantage</p>
                         <h2 class="mt-4 text-3xl font-extrabold text-slate-900 tracking-tight">Why Air Quality-as-a-Service is Different</h2>
                         <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
-                            Choosing an air quality solution involves more than just hardware. It's a choice between a capital expense and a strategic investment, between isolated devices and an intelligent system. Here's how we compare to the alternatives.
+                            Choosing an air quality solution involves more than just hardware. It's a choice between a capital expense and a strategic investment, between isolated devices and an intelligent system. Here’s how we compare to the alternatives.
                         </p>
                     </div>
                     <div class="mt-12 scroll-reveal overflow-x-auto">
@@ -567,6 +383,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- Our Story Section -->
             <section id="story" class="py-16 md:py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -586,15 +403,15 @@
                             <p class="mt-3 text-slate-600">Our mission is backed by deep, hands-on expertise in building and validating air quality systems at scale.</p>
                             <ul class="mt-6 space-y-4">
                                 <li class="flex items-start">
-                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold" aria-hidden="true">✔</div>
+                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">✔</div>
                                     <p class="ml-4 text-slate-700"><b class="text-slate-900">End-to-End System Design:</b> Proven experience designing the complete IoT stack (hardware, cloud, apps) for commercial air purifiers.</p>
                                 </li>
                                 <li class="flex items-start">
-                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold" aria-hidden="true">✔</div>
+                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">✔</div>
                                     <p class="ml-4 text-slate-700"><b class="text-slate-900">Rigorous Validation Protocols:</b> Deep, first-hand experience with the testing protocols required to validate systems against both Indian and stringent EU standards.</p>
                                 </li>
                                 <li class="flex items-start">
-                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold" aria-hidden="true">✔</div>
+                                    <div class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold">✔</div>
                                     <p class="ml-4 text-slate-700"><b class="text-slate-900">Supply Chain Expertise:</b> Established connections and deep knowledge of the supply chain for high-quality filters, purifiers, and critical components.</p>
                                 </li>
                             </ul>
@@ -602,6 +419,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- Industries Section -->
             <section id="industries" class="py-16 md:py-24 bg-slate-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -613,15 +431,15 @@
                         </p>
                     </div>
                     <div class="mt-12 scroll-reveal">
-                        <div class="max-w-2xl mx-auto flex justify-center items-center bg-slate-100 p-1.5 rounded-xl" id="industry-tab-nav" role="tablist" aria-label="Industry tabs">
-                            <button data-tab="corporate" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-active" role="tab" aria-selected="true" aria-controls="corporate" id="corporate-tab">Corporate</button>
-                            <button data-tab="education" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-inactive" role="tab" aria-selected="false" aria-controls="education" id="education-tab">Education</button>
-                            <button data-tab="healthcare" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-inactive" role="tab" aria-selected="false" aria-controls="healthcare" id="healthcare-tab">Healthcare</button>
+                        <div class="max-w-2xl mx-auto flex justify-center items-center bg-slate-100 p-1.5 rounded-xl" id="industry-tab-nav">
+                            <button data-tab="corporate" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-active">Corporate</button>
+                            <button data-tab="education" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-inactive">Education</button>
+                            <button data-tab="healthcare" class="industry-tab w-full py-2.5 px-4 text-sm sm:text-base font-semibold rounded-lg transition-all duration-300 industry-tab-inactive">Healthcare</button>
                         </div>
                     </div>
                     <div class="mt-8 max-w-5xl mx-auto">
                         <!-- Corporate Briefing -->
-                        <div id="corporate" class="industry-tab-content" role="tabpanel" aria-labelledby="corporate-tab">
+                        <div id="corporate" class="industry-tab-content">
                             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-slate-200">
                                 <h3 class="text-2xl font-bold text-slate-900">Briefing: The High-Performance Workplace</h3>
                                 <p class="mt-4 text-slate-600">For CHROs, CFOs, and COOs, the office is no longer just a space—it's a strategic tool for talent retention, productivity, and brand expression. A healthy building is foundational to a high-performing organization.</p>
@@ -665,7 +483,7 @@
                             </div>
                         </div>
                         <!-- Education Briefing -->
-                        <div id="education" class="industry-tab-content hidden" role="tabpanel" aria-labelledby="education-tab">
+                        <div id="education" class="industry-tab-content hidden">
                             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-slate-200">
                                 <h3 class="text-2xl font-bold text-slate-900">Briefing: The Optimal Learning Environment</h3>
                                 <p class="mt-4 text-slate-600">For Principals and Trustees, the physical school environment is an active participant in the educational process. Air quality directly impacts the core mission: student achievement and staff effectiveness.</p>
@@ -686,14 +504,14 @@
                                     </div>
                                     <div class="bg-slate-50 p-4 rounded-xl border">
                                         <div class="chart-container relative h-64 w-full max-w-md mx-auto">
-                                            <canvas id="educationChart" aria-label="Education impact chart"></canvas>
+                                            <canvas id="educationChart"></canvas>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Healthcare Briefing -->
-                        <div id="healthcare" class="industry-tab-content hidden" role="tabpanel" aria-labelledby="healthcare-tab">
+                        <div id="healthcare" class="industry-tab-content hidden">
                              <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border border-slate-200">
                                 <h3 class="text-2xl font-bold text-slate-900">Briefing: Patient Safety & Staff Resilience</h3>
                                 <p class="mt-4 text-slate-600">For Hospital CEOs and CMOs, managing risk while enhancing the patient experience is paramount. Air quality in non-clinical areas is a critical, often-underestimated component of a comprehensive safety and quality strategy.</p>
@@ -716,21 +534,21 @@
                                         <h4 class="font-semibold text-center text-slate-800 mb-4">AQaaS Risk Mitigation Framework</h4>
                                         <div class="space-y-4">
                                             <div class="flex items-start">
-                                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold" aria-hidden="true">✔</div>
+                                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">✔</div>
                                                 <div class="ml-3">
                                                     <p class="font-semibold text-slate-800">Pathogen Transmission</p>
                                                     <p class="text-xs text-slate-600">Reduces airborne viral & bacterial load in common areas.</p>
                                                 </div>
                                             </div>
                                             <div class="flex items-start">
-                                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold" aria-hidden="true">✔</div>
+                                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">✔</div>
                                                 <div class="ml-3">
                                                     <p class="font-semibold text-slate-800">Negative Patient Perception</p>
                                                     <p class="text-xs text-slate-600">Improves satisfaction scores via a visibly clean environment.</p>
                                                 </div>
                                             </div>
                                             <div class="flex items-start">
-                                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold" aria-hidden="true">✔</div>
+                                                <div class="flex-shrink-0 h-6 w-6 rounded-full bg-green-100 text-green-700 flex items-center justify-center font-bold">✔</div>
                                                 <div class="ml-3">
                                                     <p class="font-semibold text-slate-800">Staff Health & Burnout</p>
                                                     <p class="text-xs text-slate-600">Lowers occupational health risks, supporting staff retention.</p>
@@ -744,6 +562,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- Testimonials Section (NEW) -->
             <section id="testimonials" class="py-16 md:py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -754,7 +573,7 @@
                     <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                         <!-- Testimonial 1 -->
                         <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 scroll-reveal">
-                            <p class="text-lg text-slate-700">"We've noticed a definite improvement in the classroom environment. Students are more alert and focused, especially in the post-lunch sessions. The data dashboard makes the impact visible."</p>
+                            <p class="text-lg text-slate-700">“We've noticed a definite improvement in the classroom environment. Students are more alert and focused, especially in the post-lunch sessions. The data dashboard makes the impact visible.”</p>
                             <div class="mt-6">
                                 <p class="font-bold text-slate-900">Principal</p>
                                 <p class="text-sm text-slate-500">Leading K-12 School, Thane</p>
@@ -762,7 +581,7 @@
                         </div>
                         <!-- Testimonial 2 -->
                         <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 scroll-reveal" style="transition-delay: 150ms;">
-                            <p class="text-lg text-slate-700">"This is more than just an air purifier; it's a visible commitment to employee well-being. It sends a powerful message that we care about our team's health and performance."</p>
+                            <p class="text-lg text-slate-700">“This is more than just an air purifier; it’s a visible commitment to employee well-being. It sends a powerful message that we care about our team's health and performance.”</p>
                             <div class="mt-6">
                                 <p class="font-bold text-slate-900">HR Manager</p>
                                 <p class="text-sm text-slate-500">Corporate Partner, Abu Dhabi</p>
@@ -771,6 +590,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- Pricing & Pilot Section (NEW) -->
             <section id="pricing" class="py-16 md:py-24 bg-slate-50">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -795,6 +615,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- CTA Section -->
             <section id="pilot" class="py-16 md:py-24 bg-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -802,7 +623,7 @@
                         <h2 class="text-4xl font-extrabold tracking-tight">Prove it to Yourself. On Us.</h2>
                         <p class="mt-4 max-w-2xl mx-auto text-blue-100">The most powerful data is your own. We invite you to a no-cost, 90-day pilot program to measure the impact of clean air on your own team and in your own building.</p>
                         <div class="mt-8">
-                            <button class="book-pilot-btn inline-block bg-white text-blue-800 font-bold px-10 py-4 rounded-lg shadow-lg hover:bg-slate-100 transform hover:scale-105 transition-all duration-300" aria-label="Book a Free Pilot">
+                            <button class="book-pilot-btn inline-block bg-white text-blue-800 font-bold px-10 py-4 rounded-lg shadow-lg hover:bg-slate-100 transform hover:scale-105 transition-all duration-300">
                                 Book a Free Pilot
                             </button>
                         </div>
@@ -824,12 +645,12 @@
                         <!-- FAQ Item 1 -->
                         <div class="border border-slate-200 rounded-lg bg-white">
                             <h2>
-                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false" aria-controls="faq1-content">
+                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
                                     <span>What exactly is "Air Quality-as-a-Service" (AQaaS)?</span>
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                             </h2>
-                            <div id="faq1-content" class="accordion-content" aria-hidden="true">
+                            <div class="accordion-content">
                                 <div class="p-6 pt-0 text-slate-600">
                                     <p>AQaaS is a business model where you pay a subscription for a guaranteed outcome—clean air—instead of buying and managing hardware. Our all-inclusive service covers state-of-the-art sensors, purification units, proactive maintenance, filter replacements, and detailed performance reporting. We take on the operational burden so you can focus on the benefits.</p>
                                 </div>
@@ -838,12 +659,12 @@
                         <!-- FAQ Item 2 -->
                         <div class="border border-slate-200 rounded-lg bg-white">
                             <h2>
-                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false" aria-controls="faq2-content">
+                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
                                     <span>How does the no-cost pilot program work?</span>
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                             </h2>
-                            <div id="faq2-content" class="accordion-content" aria-hidden="true">
+                            <div class="accordion-content">
                                 <div class="p-6 pt-0 text-slate-600">
                                     <p>Our 90-day, no-cost, no-obligation pilot is designed to build a business case using your own data. We'll install our system in a designated area of your building to establish a baseline, deploy our solution, and measure the improvement. You'll receive a comprehensive report detailing the impact on air quality and correlating it to metrics like cognitive performance and employee wellness.</p>
                                 </div>
@@ -852,12 +673,12 @@
                         <!-- FAQ Item 3 -->
                         <div class="border border-slate-200 rounded-lg bg-white">
                             <h2>
-                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false" aria-controls="faq3-content">
+                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
                                     <span>How does your system impact our energy consumption?</span>
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                             </h2>
-                            <div id="faq3-content" class="accordion-content" aria-hidden="true">
+                            <div class="accordion-content">
                                 <div class="p-6 pt-0 text-slate-600">
                                     <p>Our system is designed for energy efficiency. Unlike traditional HVAC systems that often run constantly, our intelligent platform uses real-time data to activate purification only when and where it's needed. This targeted approach significantly reduces energy consumption compared to brute-force filtration, leading to direct operational cost savings.</p>
                                 </div>
@@ -866,12 +687,12 @@
                         <!-- FAQ Item 4 -->
                         <div class="border border-slate-200 rounded-lg bg-white">
                             <h2>
-                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false" aria-controls="faq4-content">
+                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
                                     <span>What about using plants or "living walls" instead of technology?</span>
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                             </h2>
-                            <div id="faq4-content" class="accordion-content" aria-hidden="true">
+                            <div class="accordion-content">
                                 <div class="p-6 pt-0 text-slate-600">
                                     <p>While plants are excellent for aesthetics and psychological well-being, they are not an effective solution for removing the most harmful airborne pollutants in a typical office or school. The difference between biology and engineered technology is significant:</p>
                                     <ul class="mt-4 space-y-3 list-disc list-inside">
@@ -886,12 +707,12 @@
                          <!-- FAQ Item 5 (NEW) -->
                         <div class="border border-slate-200 rounded-lg bg-white">
                             <h2>
-                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false" aria-controls="faq5-content">
+                                <button type="button" class="accordion-button flex items-center justify-between w-full p-6 font-semibold text-left text-slate-800" aria-expanded="false">
                                     <span>Which specific airborne pathogens can your system filter?</span>
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
                                 </button>
                             </h2>
-                            <div id="faq5-content" class="accordion-content" aria-hidden="true">
+                            <div class="accordion-content">
                                 <div class="p-6 pt-0 text-slate-600">
                                     <p>Our service uses purifiers with True HEPA filters, which are certified to capture 99.97% of particles at 0.3 microns (µm). Due to the physics of filtration (interception, impaction, and diffusion), they are highly effective across a broad spectrum of particle sizes, including microbiologicals. <sup>[4]</sup></p>
                                     <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -910,6 +731,7 @@
                     </div>
                 </div>
             </section>
+
             <!-- Sources Section -->
             <section class="py-16 bg-slate-50 border-t border-slate-200">
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 scroll-reveal">
@@ -929,8 +751,8 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div class="md:col-span-1">
-                         <a href="#home" class="flex items-center gap-2" aria-label="Breathe Easier Home">
-                            <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-xl text-white" aria-hidden="true">
+                         <a href="#home" class="flex items-center gap-2">
+                            <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-xl text-white">
                                 🛡️
                             </div>
                             <span class="text-xl font-bold text-white">Breathe Easier</span>
@@ -969,6 +791,7 @@
             </div>
         </footer>
     </div>
+
     <!-- Dashboard Content (Initially Hidden) -->
     <div id="dashboard-content" class="hidden">
         <!-- Dashboard Header -->
@@ -980,20 +803,19 @@
             <div class="flex items-center space-x-6">
                 <span id="current-datetime" class="text-sm text-gray-500 font-medium"></span>
                 <div class="relative">
-                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0369A1] w-48 transition-all duration-200" aria-label="Search">
-                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" aria-hidden="true"></i>
+                    <input type="text" placeholder="Search..." class="pl-10 pr-4 py-2 rounded-full bg-gray-100 text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#0369A1] w-48 transition-all duration-200">
+                    <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
                 </div>
                 <div class="relative">
-                    <button id="bell-icon" class="text-gray-500 text-xl hover:text-[#0369A1] transition-colors duration-200" aria-label="Notifications">
-                        <i class="fas fa-bell" aria-hidden="true"></i>
-                        <span id="notification-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center" aria-hidden="true"></span>
-                    </button>
+                    <i id="bell-icon" class="fas fa-bell text-gray-500 text-xl cursor-pointer hover:text-[#0369A1] transition-colors duration-200"></i>
+                    <span id="notification-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">3</span>
                 </div>
-                <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold text-lg cursor-pointer hover:ring-2 hover:ring-[#0369A1] transition-all duration-200" aria-label="User profile">
+                <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center text-gray-600 font-bold text-lg cursor-pointer hover:ring-2 hover:ring-[#0369A1] transition-all duration-200">
                     JD
                 </div>
             </div>
         </header>
+
         <!-- Dashboard Main Content Area -->
         <main class="flex-1 p-6 grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-min">
             <!-- Left Column -->
@@ -1002,12 +824,12 @@
                 <div class="bg-white p-6 rounded-xl shadow-lg flex flex-col items-center justify-center text-center h-fit">
                     <h2 class="text-lg font-semibold text-[#4B5563] mb-4">Overall Air Quality Index (AQI)</h2>
                     <div class="flex items-baseline space-x-2">
-                        <span id="overall-aqi" class="text-7xl font-extrabold text-[#1F2937]" aria-live="polite">62</span>
+                        <span id="overall-aqi" class="text-7xl font-extrabold text-[#1F2937]">62</span>
                         <span id="overall-status" class="text-4xl font-bold text-[#F59E0B]">Moderate</span>
                     </div>
                     <div class="w-full mt-6">
                         <h3 class="text-sm text-[#4B5563] mb-2">AQI Trend (Last 24 Hours)</h3>
-                        <svg class="sparkline-svg" viewBox="0 0 300 50" preserveAspectRatio="none" aria-hidden="true">
+                        <svg class="sparkline-svg" viewBox="0 0 300 50" preserveAspectRatio="none">
                             <path id="sparkline-fill-path" class="sparkline-fill fill-[#F59E0B]/10" d="" />
                             <path id="sparkline-line-path" class="sparkline-path stroke-[#F59E0B]" d="" />
                         </svg>
@@ -1017,94 +839,105 @@
                 <!-- Interactive Floor Plan -->
                 <div class="bg-white p-6 rounded-xl shadow-lg flex-1 min-h-[400px] relative overflow-hidden">
                     <h2 class="text-xl font-semibold text-[#1F2937] mb-2">Office Floor Plan Overview</h2>
-                    <div class="flex space-x-2 mb-2" role="tablist" aria-label="Floor selection">
-                        <button id="floor1-btn" class="floor-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#0369A1] text-white shadow-md hover:bg-sky-700 transition-colors duration-200" role="tab" aria-selected="true" aria-controls="floor-plan-1">Floor 1</button>
-                        <button id="floor2-btn" class="floor-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200" role="tab" aria-selected="false" aria-controls="floor-plan-2">Floor 2</button>
-                        <button id="floor3-btn" class="floor-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200" role="tab" aria-selected="false" aria-controls="floor-plan-3">Floor 3</button>
+                    <div class="flex space-x-2 mb-2">
+                        <button id="floor1-btn" class="floor-btn px-4 py-2 rounded-lg text-sm font-medium bg-[#0369A1] text-white shadow-md hover:bg-sky-700 transition-colors duration-200">Floor 1</button>
+                        <button id="floor2-btn" class="floor-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200">Floor 2</button>
+                        <button id="floor3-btn" class="floor-btn px-4 py-2 rounded-lg text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition-colors duration-200">Floor 3</button>
                     </div>
                     <div class="relative w-full h-auto flex items-center justify-center">
-                        <svg id="floor-plan-1" class="floor-plan-svg w-full h-auto max-w-full max-h-full" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Floor 1 plan">
+                        <svg id="floor-plan-1" class="floor-plan-svg w-full h-auto max-w-full max-h-full" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
                             <!-- Main Office Layout -->
                             <rect x="50" y="50" width="700" height="400" fill="#F0F4F8" rx="15" ry="15" stroke="#E2E8F0" stroke-width="3"/>
+
                             <!-- Entrance/Reception -->
                             <rect x="50" y="50" width="100" height="100" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="100" y="110" font-size="12" fill="#4B5563" text-anchor="middle">Reception</text>
-                            <circle id="room-reception" cx="100" cy="80" r="10" class="room-dot" data-room-name="Reception" data-aqi="45" data-pm25="12" data-co2="600" data-vocs="80" fill="#10B981" data-occupied="true" role="button" tabindex="0" aria-label="Reception room details"/>
+                            <circle id="room-reception" cx="100" cy="80" r="10" class="room-dot" data-room-name="Reception" data-aqi="45" data-pm25="12" data-co2="600" data-vocs="80" fill="#10B981" data-occupied="true"/>
                             <text class="occupancy-icon" x="100" y="84" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Open Workspace 1 -->
                             <rect x="160" y="50" width="250" height="150" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="285" y="125" font-size="14" fill="#4B5563" text-anchor="middle">Open Workspace 1</text>
-                            <circle id="room-open-workspace-1" cx="285" cy="80" r="10" class="room-dot" data-room-name="Open Workspace 1" data-aqi="42" data-pm25="15" data-co2="750" data-vocs="120" fill="#10B981" data-occupied="true" role="button" tabindex="0" aria-label="Open Workspace 1 details"/>
+                            <circle id="room-open-workspace-1" cx="285" cy="80" r="10" class="room-dot" data-room-name="Open Workspace 1" data-aqi="42" data-pm25="15" data-co2="750" data-vocs="120" fill="#10B981" data-occupied="true"/>
                             <text class="occupancy-icon" x="285" y="84" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Conference Room A -->
                             <rect x="420" y="50" width="150" height="100" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="495" y="95" font-size="12" fill="#4B5563" text-anchor="middle">Conf. Room A</text>
-                            <circle id="room-conf-a" cx="495" cy="75" r="10" class="room-dot" data-room-name="Conference Room A" data-aqi="38" data-pm25="10" data-co2="680" data-vocs="90" fill="#10B981" data-occupied="false" role="button" tabindex="0" aria-label="Conference Room A details"/>
+                            <circle id="room-conf-a" cx="495" cy="75" r="10" class="room-dot" data-room-name="Conference Room A" data-aqi="38" data-pm25="10" data-co2="680" data-vocs="90" fill="#10B981" data-occupied="false"/>
                             <text class="occupancy-icon" x="495" y="79" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Conference Room B -->
                             <rect x="580" y="50" width="150" height="100" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="655" y="95" font-size="12" fill="#4B5563" text-anchor="middle">Conf. Room B</text>
-                            <circle id="room-conf-b" cx="655" cy="75" r="10" class="room-dot" data-room-name="Conference Room B" data-aqi="68" data-pm25="25" data-co2="980" data-vocs="150" fill="#F59E0B" data-occupied="true" role="button" tabindex="0" aria-label="Conference Room B details"/>
+                            <circle id="room-conf-b" cx="655" cy="75" r="10" class="room-dot" data-room-name="Conference Room B" data-aqi="68" data-pm25="25" data-co2="980" data-vocs="150" fill="#F59E0B" data-occupied="true"/>
                             <text class="occupancy-icon" x="655" y="79" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Pantry -->
                             <rect x="50" y="160" width="100" height="100" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="100" y="210" font-size="12" fill="#4B5563" text-anchor="middle">Pantry</text>
-                            <circle id="room-pantry" cx="100" cy="185" r="10" class="room-dot" data-room-name="Pantry" data-aqi="55" data-pm25="18" data-co2="820" data-vocs="130" fill="#F59E0B" data-occupied="false" role="button" tabindex="0" aria-label="Pantry details"/>
+                            <circle id="room-pantry" cx="100" cy="185" r="10" class="room-dot" data-room-name="Pantry" data-aqi="55" data-pm25="18" data-co2="820" data-vocs="130" fill="#F59E0B" data-occupied="false"/>
                             <text class="occupancy-icon" x="100" y="189" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Server Room -->
                             <rect x="160" y="210" width="100" height="100" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="210" y="260" font-size="12" fill="#4B5563" text-anchor="middle">Server Room</text>
-                            <circle id="room-server" cx="210" cy="235" r="10" class="room-dot" data-room-name="Server Room" data-aqi="30" data-pm25="8" data-co2="550" data-vocs="70" fill="#10B981" data-occupied="false" role="button" tabindex="0" aria-label="Server Room details"/>
+                            <circle id="room-server" cx="210" cy="235" r="10" class="room-dot" data-room-name="Server Room" data-aqi="30" data-pm25="8" data-co2="550" data-vocs="70" fill="#10B981" data-occupied="false"/>
                             <text class="occupancy-icon" x="210" y="239" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Meeting Pods -->
                             <rect x="270" y="210" width="200" height="100" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="370" y="260" font-size="14" fill="#4B5563" text-anchor="middle">Meeting Pods</text>
-                            <circle id="room-pods" cx="370" cy="235" r="10" class="room-dot" data-room-name="Meeting Pods" data-aqi="95" data-pm25="35" data-co2="1100" data-vocs="200" fill="#EF4444" data-occupied="true" role="button" tabindex="0" aria-label="Meeting Pods details"/>
+                            <circle id="room-pods" cx="370" cy="235" r="10" class="room-dot" data-room-name="Meeting Pods" data-aqi="95" data-pm25="35" data-co2="1100" data-vocs="200" fill="#EF4444" data-occupied="true"/>
                             <text class="occupancy-icon" x="370" y="239" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Open Workspace 2 -->
                             <rect x="480" y="160" width="250" height="150" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="605" y="235" font-size="14" fill="#4B5563" text-anchor="middle">Open Workspace 2</text>
-                            <circle id="room-open-workspace-2" cx="605" cy="185" r="10" class="room-dot" data-room-name="Open Workspace 2" data-aqi="50" data-pm25="16" data-co2="780" data-vocs="110" fill="#10B981" data-occupied="true" role="button" tabindex="0" aria-label="Open Workspace 2 details"/>
+                            <circle id="room-open-workspace-2" cx="605" cy="185" r="10" class="room-dot" data-room-name="Open Workspace 2" data-aqi="50" data-pm25="16" data-co2="780" data-vocs="110" fill="#10B981" data-occupied="true"/>
                             <text class="occupancy-icon" x="605" y="189" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Breakout Area -->
                             <rect x="50" y="320" width="200" height="100" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="150" y="370" font-size="14" fill="#4B5563" text-anchor="middle">Breakout Area</text>
-                            <circle id="room-breakout" cx="150" cy="345" r="10" class="room-dot" data-room-name="Breakout Area" data-aqi="75" data-pm25="28" data-co2="1050" data-vocs="180" fill="#EF4444" data-occupied="true" role="button" tabindex="0" aria-label="Breakout Area details"/>
+                            <circle id="room-breakout" cx="150" cy="345" r="10" class="room-dot" data-room-name="Breakout Area" data-aqi="75" data-pm25="28" data-co2="1050" data-vocs="180" fill="#EF4444" data-occupied="true"/>
                             <text class="occupancy-icon" x="150" y="349" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                             <!-- Private Offices -->
                             <rect x="260" y="320" width="470" height="100" fill="#E2E8F0" rx="5" ry="5"/>
                             <text x="495" y="370" font-size="14" fill="#4B5563" text-anchor="middle">Private Offices</text>
-                            <circle id="room-private-offices" cx="495" cy="345" r="10" class="room-dot" data-room-name="Private Offices" data-aqi="40" data-pm25="10" data-co2="650" data-vocs="95" fill="#10B981" data-occupied="false" role="button" tabindex="0" aria-label="Private Offices details"/>
+                            <circle id="room-private-offices" cx="495" cy="345" r="10" class="room-dot" data-room-name="Private Offices" data-aqi="40" data-pm25="10" data-co2="650" data-vocs="95" fill="#10B981" data-occupied="false"/>
                             <text class="occupancy-icon" x="495" y="349" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
+
                         </svg>
-                        <svg id="floor-plan-2" class="floor-plan-svg w-full h-auto max-w-full max-h-full hidden" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Floor 2 plan">
+                        <svg id="floor-plan-2" class="floor-plan-svg w-full h-auto max-w-full max-h-full hidden" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
                             <rect x="50" y="50" width="700" height="400" fill="#E0F2F7" rx="15" ry="15" stroke="#B3E0F2" stroke-width="3"/>
                             <rect x="70" y="70" width="200" height="100" fill="#B3E0F2" rx="5" ry="5"/>
                             <text x="170" y="120" font-size="14" fill="#4B5563" text-anchor="middle">IT Department</text>
-                            <circle id="room-it-dept" cx="170" cy="95" r="10" class="room-dot" data-room-name="IT Department" data-aqi="58" data-pm25="18" data-co2="850" data-vocs="110" fill="#F59E0B" data-occupied="true" role="button" tabindex="0" aria-label="IT Department details"/>
+                            <circle id="room-it-dept" cx="170" cy="95" r="10" class="room-dot" data-room-name="IT Department" data-aqi="58" data-pm25="18" data-co2="850" data-vocs="110" fill="#F59E0B" data-occupied="true"/>
                             <text class="occupancy-icon" x="170" y="99" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
                             <rect x="300" y="70" width="200" height="100" fill="#B3E0F2" rx="5" ry="5"/>
                             <text x="400" y="120" font-size="14" fill="#4B5563" text-anchor="middle">HR Department</text>
-                            <circle id="room-hr-dept" cx="400" cy="95" r="10" class="room-dot" data-room-name="HR Department" data-aqi="48" data-pm25="14" data-co2="700" data-vocs="90" fill="#10B981" data-occupied="true" role="button" tabindex="0" aria-label="HR Department details"/>
+                            <circle id="room-hr-dept" cx="400" cy="95" r="10" class="room-dot" data-room-name="HR Department" data-aqi="48" data-pm25="14" data-co2="700" data-vocs="90" fill="#10B981" data-occupied="true"/>
                             <text class="occupancy-icon" x="400" y="99" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
                             <rect x="530" y="70" width="200" height="100" fill="#B3E0F2" rx="5" ry="5"/>
                             <text x="630" y="120" font-size="14" fill="#4B5563" text-anchor="middle">Finance Department</text>
-                            <circle id="room-finance-dept" cx="630" cy="95" r="10" class="room-dot" data-room-name="Finance Department" data-aqi="35" data-pm25="9" data-co2="620" data-vocs="75" fill="#10B981" data-occupied="false" role="button" tabindex="0" aria-label="Finance Department details"/>
+                            <circle id="room-finance-dept" cx="630" cy="95" r="10" class="room-dot" data-room-name="Finance Department" data-aqi="35" data-pm25="9" data-co2="620" data-vocs="75" fill="#10B981" data-occupied="false"/>
                             <text class="occupancy-icon" x="630" y="99" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
                             <rect x="70" y="200" width="300" height="150" fill="#B3E0F2" rx="5" ry="5"/>
                             <text x="220" y="275" font-size="18" fill="#4B5563" text-anchor="middle">Cafeteria</text>
-                            <circle id="room-cafeteria" cx="220" cy="225" r="10" class="room-dot" data-room-name="Cafeteria" data-aqi="85" data-pm25="30" data-co2="1200" data-vocs="190" fill="#EF4444" data-occupied="true" role="button" tabindex="0" aria-label="Cafeteria details"/>
+                            <circle id="room-cafeteria" cx="220" cy="225" r="10" class="room-dot" data-room-name="Cafeteria" data-aqi="85" data-pm25="30" data-co2="1200" data-vocs="190" fill="#EF4444" data-occupied="true"/>
                             <text class="occupancy-icon" x="220" y="229" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
                             <rect x="400" y="200" width="330" height="150" fill="#B3E0F2" rx="5" ry="5"/>
                             <text x="565" y="275" font-size="18" fill="#4B5563" text-anchor="middle">Training Room</text>
-                            <circle id="room-training" cx="565" cy="225" r="10" class="room-dot" data-room-name="Training Room" data-aqi="70" data-pm25="26" data-co2="1080" data-vocs="170" fill="#F59E0B" data-occupied="false" role="button" tabindex="0" aria-label="Training Room details"/>
+                            <circle id="room-training" cx="565" cy="225" r="10" class="room-dot" data-room-name="Training Room" data-aqi="70" data-pm25="26" data-co2="1080" data-vocs="170" fill="#F59E0B" data-occupied="false"/>
                             <text class="occupancy-icon" x="565" y="229" font-family="FontAwesome" font-size="10px" text-anchor="middle" fill="#fff">&#xf007;</text>
                         </svg>
-                        <svg id="floor-plan-3" class="floor-plan-svg w-full h-auto max-w-full max-h-full hidden" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Floor 3 plan">
+                        <svg id="floor-plan-3" class="floor-plan-svg w-full h-auto max-w-full max-h-full hidden" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid meet">
                             <rect x="50" y="50" width="700" height="400" fill="#F0F8F0" rx="15" ry="15" stroke="#D3F0D3" stroke-width="3"/>
                             <text x="400" y="250" font-size="30" fill="#4B5563" text-anchor="middle">Floor 3 - Details Coming Soon</text>
                         </svg>
-                        <div id="floor-plan-popup" class="room-popup hidden" role="tooltip"></div>
+                        <div id="floor-plan-popup" class="room-popup hidden"></div>
                     </div>
                 </div>
             </section>
@@ -1115,23 +948,23 @@
                     <h2 class="text-xl font-semibold text-[#1F2937] mb-4">Key Pollutant Levels</h2>
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
-                            <div><p class="text-lg font-medium text-[#4B5563]">PM2.5</p><p id="pm25-value" class="text-2xl font-bold text-[#1F2937]" aria-live="polite">22 µg/m³</p></div>
-                            <div class="flex flex-col items-end"><span id="pm25-status" class="text-lg font-semibold text-[#F59E0B]">Moderate <button class="know-more-icon text-gray-400 ml-1" data-pollutant="pm25" aria-label="More information about PM2.5"><i class="fas fa-info-circle"></i></button></span><div class="radial-gauge mt-1"><svg viewBox="0 0 36 36" class="w-full h-full" aria-hidden="true"><circle class="gauge-bg" cx="18" cy="18" r="16"></circle><circle id="pm25-gauge" class="gauge-fill" cx="18" cy="18" r="16" stroke-dasharray="100 100" stroke-dashoffset="0"></circle></svg></div></div>
+                            <div><p class="text-lg font-medium text-[#4B5563]">PM2.5</p><p id="pm25-value" class="text-2xl font-bold text-[#1F2937]">22 µg/m³</p></div>
+                            <div class="flex flex-col items-end"><span id="pm25-status" class="text-lg font-semibold text-[#F59E0B]">Moderate <i class="fas fa-info-circle text-gray-400 ml-1 cursor-pointer know-more-icon" data-pollutant="pm25"></i></span><div class="radial-gauge mt-1"><svg viewBox="0 0 36 36" class="w-full h-full"><circle class="gauge-bg" cx="18" cy="18" r="16"></circle><circle id="pm25-gauge" class="gauge-fill" cx="18" cy="18" r="16" stroke-dasharray="100 100" stroke-dashoffset="0"></circle></svg></div></div>
                         </div>
                         <hr class="border-gray-200">
                         <div class="flex items-center justify-between">
-                            <div><p class="text-lg font-medium text-[#4B5563]">CO₂</p><p id="co2-value" class="text-2xl font-bold text-[#1F2937]" aria-live="polite">920 ppm</p></div>
-                            <div class="flex flex-col items-end"><span id="co2-status" class="text-lg font-semibold text-[#F59E0B]">Moderate <button class="know-more-icon text-gray-400 ml-1" data-pollutant="co2" aria-label="More information about CO2"><i class="fas fa-info-circle"></i></button></span><div class="radial-gauge mt-1"><svg viewBox="0 0 36 36" class="w-full h-full" aria-hidden="true"><circle class="gauge-bg" cx="18" cy="18" r="16"></circle><circle id="co2-gauge" class="gauge-fill" cx="18" cy="18" r="16" stroke-dasharray="100 100" stroke-dashoffset="0"></circle></svg></div></div>
+                            <div><p class="text-lg font-medium text-[#4B5563]">CO₂</p><p id="co2-value" class="text-2xl font-bold text-[#1F2937]">920 ppm</p></div>
+                            <div class="flex flex-col items-end"><span id="co2-status" class="text-lg font-semibold text-[#F59E0B]">Moderate <i class="fas fa-info-circle text-gray-400 ml-1 cursor-pointer know-more-icon" data-pollutant="co2"></i></span><div class="radial-gauge mt-1"><svg viewBox="0 0 36 36" class="w-full h-full"><circle class="gauge-bg" cx="18" cy="18" r="16"></circle><circle id="co2-gauge" class="gauge-fill" cx="18" cy="18" r="16" stroke-dasharray="100 100" stroke-dashoffset="0"></circle></svg></div></div>
                         </div>
                         <hr class="border-gray-200">
                         <div class="flex items-center justify-between">
-                            <div><p class="text-lg font-medium text-[#4B5563]">VOCs</p><p id="vocs-value" class="text-2xl font-bold text-[#1F2937]" aria-live="polite">160 ppb</p></div>
-                            <div class="flex flex-col items-end"><span id="vocs-status" class="text-lg font-semibold text-[#F59E0B]">Moderate <button class="know-more-icon text-gray-400 ml-1" data-pollutant="vocs" aria-label="More information about VOCs"><i class="fas fa-info-circle"></i></button></span><div class="radial-gauge mt-1"><svg viewBox="0 0 36 36" class="w-full h-full" aria-hidden="true"><circle class="gauge-bg" cx="18" cy="18" r="16"></circle><circle id="vocs-gauge" class="gauge-fill" cx="18" cy="18" r="16" stroke-dasharray="100 100" stroke-dashoffset="0"></circle></svg></div></div>
+                            <div><p class="text-lg font-medium text-[#4B5563]">VOCs</p><p id="vocs-value" class="text-2xl font-bold text-[#1F2937]">160 ppb</p></div>
+                            <div class="flex flex-col items-end"><span id="vocs-status" class="text-lg font-semibold text-[#F59E0B]">Moderate <i class="fas fa-info-circle text-gray-400 ml-1 cursor-pointer know-more-icon" data-pollutant="vocs"></i></span><div class="radial-gauge mt-1"><svg viewBox="0 0 36 36" class="w-full h-full"><circle class="gauge-bg" cx="18" cy="18" r="16"></circle><circle id="vocs-gauge" class="gauge-fill" cx="18" cy="18" r="16" stroke-dasharray="100 100" stroke-dashoffset="0"></circle></svg></div></div>
                         </div>
                         <hr class="border-gray-200">
                         <div class="flex items-center justify-between">
-                            <div><p class="text-lg font-medium text-[#4B5563]">Ozone (O₃)</p><p id="ozone-value" class="text-2xl font-bold text-[#1F2937]" aria-live="polite">40 ppb</p></div>
-                            <div class="flex flex-col items-end"><span id="ozone-status" class="text-lg font-semibold text-[#10B981]">Good <button class="know-more-icon text-gray-400 ml-1" data-pollutant="ozone" aria-label="More information about Ozone"><i class="fas fa-info-circle"></i></button></span><div class="radial-gauge mt-1"><svg viewBox="0 0 36 36" class="w-full h-full" aria-hidden="true"><circle class="gauge-bg" cx="18" cy="18" r="16"></circle><circle id="ozone-gauge" class="gauge-fill" cx="18" cy="18" r="16" stroke-dasharray="100 100" stroke-dashoffset="0"></circle></svg></div></div>
+                            <div><p class="text-lg font-medium text-[#4B5563]">Ozone (O₃)</p><p id="ozone-value" class="text-2xl font-bold text-[#1F2937]">40 ppb</p></div>
+                            <div class="flex flex-col items-end"><span id="ozone-status" class="text-lg font-semibold text-[#10B981]">Good <i class="fas fa-info-circle text-gray-400 ml-1 cursor-pointer know-more-icon" data-pollutant="ozone"></i></span><div class="radial-gauge mt-1"><svg viewBox="0 0 36 36" class="w-full h-full"><circle class="gauge-bg" cx="18" cy="18" r="16"></circle><circle id="ozone-gauge" class="gauge-fill" cx="18" cy="18" r="16" stroke-dasharray="100 100" stroke-dashoffset="0"></circle></svg></div></div>
                         </div>
                     </div>
                 </div>
@@ -1139,93 +972,75 @@
                 <div class="bg-white p-6 rounded-xl shadow-lg h-fit">
                     <h2 class="text-xl font-semibold text-[#1F2937] mb-4">Actionable Insights</h2>
                     <ul class="space-y-3 text-base text-[#4B5563]">
-                        <li class="flex items-start"><i class="fas fa-check-circle text-[#10B981] mt-1 mr-3 text-lg" aria-hidden="true"></i><span>All Systems Normal. Purifiers are running optimally.</span></li>
-                        <li class="flex items-start"><i class="fas fa-exclamation-triangle text-[#F59E0B] mt-1 mr-3 text-lg" aria-hidden="true"></i><span>High Occupancy Alert: CO₂ in Conf. Room B was elevated. Ventilation increased automatically.</span></li>
-                        <li class="flex items-start"><i class="fas fa-exclamation-circle text-[#EF4444] mt-1 mr-3 text-lg" aria-hidden="true"></i><span>Urgent: PM2.5 in Meeting Pods is unhealthy (AQI 95).</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-[#10B981] mt-1 mr-3 text-lg"></i><span>All Systems Normal. Purifiers are running optimally.</span></li>
+                        <li class="flex items-start"><i class="fas fa-exclamation-triangle text-[#F59E0B] mt-1 mr-3 text-lg"></i><span>High Occupancy Alert: CO₂ in Conf. Room B was elevated. Ventilation increased automatically.</span></li>
+                        <li class="flex items-start"><i class="fas fa-exclamation-circle text-[#EF4444] mt-1 mr-3 text-lg"></i><span>Urgent: PM2.5 in Meeting Pods is unhealthy (AQI 95).</span></li>
                     </ul>
                 </div>
                 <!-- System Status Panel -->
                 <div class="bg-white p-6 rounded-xl shadow-lg h-fit">
                     <h2 class="text-xl font-semibold text-[#1F2937] mb-4">System Status</h2>
                     <div class="space-y-3 text-base text-[#4B5563]">
-                        <div class="flex items-center justify-between"><span>Purifiers Online:</span><span class="font-bold text-[#10B981]"><i class="fas fa-check-circle mr-2" aria-hidden="true"></i>25/25</span></div>
-                        <div class="flex items-center justify-between"><span>Sensors Active:</span><span class="font-bold text-[#10B981]"><i class="fas fa-check-circle mr-2" aria-hidden="true"></i>40/40</span></div>
+                        <div class="flex items-center justify-between"><span>Purifiers Online:</span><span class="font-bold text-[#10B981]"><i class="fas fa-check-circle mr-2"></i>25/25</span></div>
+                        <div class="flex items-center justify-between"><span>Sensors Active:</span><span class="font-bold text-[#10B981]"><i class="fas fa-check-circle mr-2"></i>40/40</span></div>
                         <div class="flex items-center justify-between"><span>Last System Check:</span><span class="font-bold text-[#4B5563]">Just Now</span></div>
                     </div>
                 </div>
             </section>
         </main>
     </div>
+
     <!-- Modals -->
-    <div id="know-more-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div id="know-more-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="modal-title" class="text-xl font-semibold text-[#1F2937]"></h3>
-                <button id="modal-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl" aria-label="Close modal">&times;</button>
-            </div>
+            <div class="flex justify-between items-center mb-4"><h3 id="modal-title" class="text-xl font-semibold text-[#1F2937]"></h3><button id="modal-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button></div>
             <p id="modal-pollutant-value" class="text-lg font-bold text-[#0369A1] mb-2"></p>
             <p id="modal-description" class="text-base text-[#4B5563]"></p>
         </div>
     </div>
-    <div id="room-details-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="room-details-title">
+    <div id="room-details-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="room-details-title" class="text-xl font-semibold text-[#1F2937]"></h3>
-                <button id="room-details-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl" aria-label="Close modal">&times;</button>
-            </div>
-            <div class="space-y-3 text-base text-[#4B5563]">
-                <p>Occupancy: <span id="room-details-occupancy" class="font-bold"></span></p>
-                <p>Overall AQI: <span id="room-details-aqi" class="font-bold"></span> (<span id="room-details-aqi-status" class="font-semibold"></span>)</p>
-                <p>PM2.5: <span id="room-details-pm25" class="font-bold"></span> (<span id="room-details-pm25-status"></span>)</p>
-                <p>CO₂: <span id="room-details-co2" class="font-bold"></span> (<span id="room-details-co2-status"></span>)</p>
-                <p>VOCs: <span id="room-details-vocs" class="font-bold"></span> (<span id="room-details-vocs-status"></span>)</p>
-            </div>
+            <div class="flex justify-between items-center mb-4"><h3 id="room-details-title" class="text-xl font-semibold text-[#1F2937]"></h3><button id="room-details-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button></div>
+            <div class="space-y-3 text-base text-[#4B5563]"><p>Occupancy: <span id="room-details-occupancy" class="font-bold"></span></p><p>Overall AQI: <span id="room-details-aqi" class="font-bold"></span> (<span id="room-details-aqi-status" class="font-semibold"></span>)</p><p>PM2.5: <span id="room-details-pm25" class="font-bold"></span> (<span id="room-details-pm25-status"></span>)</p><p>CO₂: <span id="room-details-co2" class="font-bold"></span> (<span id="room-details-co2-status"></span>)</p><p>VOCs: <span id="room-details-vocs" class="font-bold"></span> (<span id="room-details-vocs-status"></span>)</p></div>
         </div>
     </div>
-    <div id="notifications-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="notifications-title">
+    <div id="notifications-modal" class="modal-overlay">
         <div class="modal-content">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="notifications-title" class="text-xl font-semibold text-[#1F2937]">Notifications & Alerts</h3>
-                <button id="notifications-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl" aria-label="Close modal">&times;</button>
-            </div>
-            <div class="flex space-x-2 mb-4" role="tablist" aria-label="Notification filters">
-                <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
-                <button class="filter-btn" data-filter="unread" role="tab" aria-selected="false">Unread</button>
-                <button class="filter-btn" data-filter="alerts" role="tab" aria-selected="false">Alerts</button>
-            </div>
-            <div id="notification-list" class="notification-list" role="list"></div>
+            <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-semibold text-[#1F2937]">Notifications & Alerts</h3><button id="notifications-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button></div>
+            <div class="flex space-x-2 mb-4"><button class="filter-btn active" data-filter="all">All</button><button class="filter-btn" data-filter="unread">Unread</button><button class="filter-btn" data-filter="alerts">Alerts</button></div>
+            <div id="notification-list" class="notification-list"></div>
             <button id="mark-all-read-btn" class="mt-4 w-full bg-[#0369A1] text-white py-2 px-4 rounded-lg hover:bg-sky-700 transition-colors duration-200">Mark All As Read</button>
         </div>
     </div>
     <!-- Pilot Request Modal -->
-    <div id="pilot-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="pilot-form-title">
+    <div id="pilot-modal" class="modal-overlay">
         <div class="modal-content">
             <div id="pilot-form-content">
                 <div class="flex justify-between items-center mb-4">
-                    <h3 id="pilot-form-title" class="text-xl font-semibold text-slate-900">Request a No-Cost Pilot</h3>
-                    <button id="pilot-modal-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl" aria-label="Close modal">&times;</button>
+                    <h3 class="text-xl font-semibold text-slate-900">Request a No-Cost Pilot</h3>
+                    <button id="pilot-modal-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl">&times;</button>
                 </div>
                 <p class="text-slate-600 mb-6">Fill out the form below, and our team will contact you to schedule your 90-day, no-obligation pilot program.</p>
-                <form id="pilot-form" class="space-y-4" novalidate>
+                <form id="pilot-form" class="space-y-4">
                     <div>
                         <label for="fullName" class="block text-sm font-medium text-slate-700">Full Name</label>
-                        <input type="text" id="fullName" name="fullName" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" aria-required="true">
+                        <input type="text" id="fullName" name="fullName" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     </div>
                     <div>
                         <label for="companyName" class="block text-sm font-medium text-slate-700">Company Name</label>
-                        <input type="text" id="companyName" name="companyName" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" aria-required="true">
+                        <input type="text" id="companyName" name="companyName" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     </div>
                     <div>
                         <label for="workEmail" class="block text-sm font-medium text-slate-700">Work Email</label>
-                        <input type="email" id="workEmail" name="workEmail" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" aria-required="true">
+                        <input type="email" id="workEmail" name="workEmail" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     </div>
                     <div>
                         <label for="phone" class="block text-sm font-medium text-slate-700">Phone Number</label>
-                        <input type="tel" id="phone" name="phone" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" aria-required="true">
+                        <input type="tel" id="phone" name="phone" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     </div>
                     <div>
                         <label for="industry" class="block text-sm font-medium text-slate-700">Industry</label>
-                        <select id="industry" name="industry" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" aria-required="true">
+                        <select id="industry" name="industry" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                             <option>Corporate</option>
                             <option>Education</option>
                             <option>Healthcare</option>
@@ -1234,18 +1049,20 @@
                     </div>
                     <div>
                         <label for="headcount" class="block text-sm font-medium text-slate-700">Number of Employees / Students (Approx.)</label>
-                        <input type="number" id="headcount" name="headcount" required min="1" class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" aria-required="true">
+                        <input type="number" id="headcount" name="headcount" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                     </div>
-                    <div id="form-error" class="text-red-500 text-sm hidden" role="alert"></div>
                     <button type="submit" class="w-full bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg shadow-sm hover:bg-blue-800 transition-colors duration-200 flex items-center justify-center">
                         <span id="submit-text">Submit Request</span>
-                        <div id="submit-spinner" class="spinner ml-2 hidden" aria-hidden="true"></div>
+                        <svg id="submit-spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
                     </button>
                 </form>
             </div>
             <div id="pilot-success-message" class="hidden text-center">
                 <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 </div>
                 <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Thank You!</h3>
                 <div class="mt-2 px-7 py-3">
@@ -1257,41 +1074,14 @@
             </div>
         </div>
     </div>
-    
-    <!-- Client Login Modal -->
-    <div id="login-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="login-title">
-        <div class="modal-content max-w-sm">
-            <div class="flex justify-between items-center mb-4">
-                <h3 id="login-title" class="text-xl font-semibold text-slate-900">Client Portal Login</h3>
-                <button id="login-modal-close-btn" class="text-gray-500 hover:text-gray-700 text-2xl" aria-label="Close modal">&times;</button>
-            </div>
-            <form id="login-form" class="space-y-4" novalidate>
-                <div>
-                    <label for="username" class="block text-sm font-medium text-slate-700">Username</label>
-                    <input type="text" id="username" name="username" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" aria-required="true">
-                </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-slate-700">Password</label>
-                    <input type="password" id="password" name="password" required class="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md shadow-sm placeholder-slate-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500" aria-required="true">
-                </div>
-                <div id="login-error" class="text-red-500 text-sm text-center" role="alert"></div>
-                <button type="submit" class="w-full bg-blue-700 text-white font-semibold py-2.5 px-4 rounded-lg shadow-sm hover:bg-blue-800 transition-colors duration-200">
-                    Login
-                </button>
-                <p class="text-xs text-center text-slate-500">Use `demo` / `@lakeside` for a preview.</p>
-            </form>
-        </div>
-    </div>
 
     <!-- Firebase SDK -->
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
         import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-        
+
         // Your web app's Firebase configuration
-        // Note: In production, these values should be stored in environment variables
-        // or fetched from a secure endpoint, not hardcoded in the HTML
         const firebaseConfig = {
           apiKey: "AIzaSyC9YLLWA7hb7A23y7g5w87tfPJ-j-mGJlc",
           authDomain: "lakeside-health-2eed9.firebaseapp.com",
@@ -1301,24 +1091,11 @@
           appId: "1:118115163034:web:111a7bb9ba56fd28787823",
           measurementId: "G-HS420T4JVC"
         };
-        
-        // Initialize Firebase with error handling
-        let db;
-        try {
-            const app = initializeApp(firebaseConfig);
-            db = getFirestore(app);
-            window.db = db; // Make db globally accessible for form submission
-            console.log("Firebase initialized successfully");
-        } catch (error) {
-            console.error("Firebase initialization error:", error);
-            // Show a user-friendly error message
-            const formError = document.getElementById('form-error');
-            if (formError) {
-                formError.textContent = "Failed to initialize the application. Please try again later.";
-                formError.classList.remove('hidden');
-            }
-        }
-        
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
         // Lead Capture Form Logic
         const pilotModal = document.getElementById('pilot-modal');
         const pilotModalCloseBtn = document.getElementById('pilot-modal-close-btn');
@@ -1330,122 +1107,57 @@
         const submitBtn = pilotForm.querySelector('button[type="submit"]');
         const submitText = document.getElementById('submit-text');
         const submitSpinner = document.getElementById('submit-spinner');
-        const formError = document.getElementById('form-error');
-        
-        const openModal = () => {
-            pilotModal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-        };
-        
+
+        const openModal = () => pilotModal.classList.add('active');
         const closeModal = () => {
             pilotModal.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
             // Reset form for next time
             setTimeout(() => {
                 pilotFormContent.classList.remove('hidden');
                 successMessage.classList.add('hidden');
-                formError.classList.add('hidden');
                 pilotForm.reset();
             }, 300); // Delay to allow fade-out animation
         };
-        
-        // Event delegation for book pilot buttons
-        document.addEventListener('click', function(e) {
-            if (e.target.closest('.book-pilot-btn')) {
-                e.preventDefault();
-                openModal();
-            }
-        });
-        
+
+        bookPilotBtns.forEach(btn => btn.addEventListener('click', openModal));
         pilotModalCloseBtn.addEventListener('click', closeModal);
         successCloseBtn.addEventListener('click', closeModal);
-        
-        // Close modal when clicking outside
         pilotModal.addEventListener('click', (e) => {
             if (e.target === pilotModal) {
                 closeModal();
             }
         });
-        
-        // Form submission with validation
+
         pilotForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Hide previous errors
-            formError.classList.add('hidden');
-            
-            // Validate form fields
-            const fullName = pilotForm.fullName.value.trim();
-            const companyName = pilotForm.companyName.value.trim();
-            const workEmail = pilotForm.workEmail.value.trim();
-            const phone = pilotForm.phone.value.trim();
-            const industry = pilotForm.industry.value;
-            const headcount = pilotForm.headcount.value.trim();
-            
-            // Basic validation
-            if (!fullName || !companyName || !workEmail || !phone || !industry || !headcount) {
-                formError.textContent = 'Please fill in all required fields.';
-                formError.classList.remove('hidden');
-                return;
-            }
-            
-            // Validate email format
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            if (!emailRegex.test(workEmail)) {
-                formError.textContent = 'Please enter a valid email address.';
-                formError.classList.remove('hidden');
-                return;
-            }
-            
-            // Validate phone number format (basic check)
-            const phoneRegex = /^[\d\s\-\+\(\)]+$/;
-            if (!phoneRegex.test(phone)) {
-                formError.textContent = 'Please enter a valid phone number.';
-                formError.classList.remove('hidden');
-                return;
-            }
-            
-            // Validate headcount is a positive number
-            if (isNaN(headcount) || parseInt(headcount) <= 0) {
-                formError.textContent = 'Please enter a valid number for headcount.';
-                formError.classList.remove('hidden');
-                return;
-            }
-            
             // Show loading state
-            submitText.textContent = 'Submitting...';
+            submitText.classList.add('hidden');
             submitSpinner.classList.remove('hidden');
             submitBtn.disabled = true;
-            
+
             const formData = {
-                fullName,
-                companyName,
-                workEmail,
-                phone,
-                industry,
-                headcount: parseInt(headcount),
-                submittedAt: new Date().toISOString()
+                fullName: pilotForm.fullName.value,
+                companyName: pilotForm.companyName.value,
+                workEmail: pilotForm.workEmail.value,
+                phone: pilotForm.phone.value,
+                industry: pilotForm.industry.value,
+                headcount: pilotForm.headcount.value,
+                submittedAt: new Date()
             };
-            
+
             try {
-                // Check if Firebase db is available
-                if (!window.db) {
-                    throw new Error('Firebase is not initialized');
-                }
-                
-                const docRef = await addDoc(collection(window.db, "pilot_requests"), formData);
+                const docRef = await addDoc(collection(db, "pilot_requests"), formData);
                 console.log("Document written with ID: ", docRef.id);
-                
                 // Show success message
                 pilotFormContent.classList.add('hidden');
                 successMessage.classList.remove('hidden');
             } catch (error) {
                 console.error("Error adding document: ", error);
-                formError.textContent = "There was an error submitting your request. Please try again later.";
-                formError.classList.remove('hidden');
+                alert("There was an error submitting your request. Please try again.");
             } finally {
                 // Hide loading state
-                submitText.textContent = 'Submit Request';
+                submitText.classList.remove('hidden');
                 submitSpinner.classList.add('hidden');
                 submitBtn.disabled = false;
             }
@@ -1454,248 +1166,50 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- LOGIN LOGIC ---
-            const loginModal = document.getElementById('login-modal');
-            const loginForm = document.getElementById('login-form');
-            const loginModalCloseBtn = document.getElementById('login-modal-close-btn');
-            const loginError = document.getElementById('login-error');
-            
-            // Simple hash function for demonstration to avoid storing plain text password.
-            // This is NOT for production security.
-            const hashCode = (s) => {
-                let h = 0;
-                for (let i = 0; i < s.length; i++) {
-                    h = Math.imul(31, h) + s.charCodeAt(i) | 0;
-                }
-                return h;
-            }
-            
-            const correctUsername = "demo";
-            const correctPasswordHash = hashCode("@lakeside"); // Hash of the correct password
-            
-            const openLoginModal = () => {
-                loginModal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-            };
-            
-            const closeLoginModal = () => {
-                loginModal.classList.remove('active');
-                document.body.style.overflow = ''; // Restore scrolling
-                loginError.textContent = '';
-                loginForm.reset();
-            };
-            
-            loginModalCloseBtn.addEventListener('click', closeLoginModal);
-            
-            // Close modal when clicking outside
-            loginModal.addEventListener('click', (e) => {
-                if (e.target === loginModal) {
-                    closeLoginModal();
-                }
-            });
-            
-            loginForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const username = loginForm.username.value;
-                const password = loginForm.password.value;
-                
-                if (username === correctUsername && hashCode(password) === correctPasswordHash) {
-                    closeLoginModal();
-                    showDashboard();
-                } else {
-                    loginError.textContent = 'Invalid username or password.';
-                    setTimeout(() => loginError.textContent = '', 3000);
-                }
-            });
-
             // --- PAGE SWITCHING LOGIC ---
             const mainContent = document.getElementById('main-content');
             const dashboardContent = document.getElementById('dashboard-content');
             const dashboardLink = document.getElementById('dashboard-link');
-            const dashboardLinkMobile = document.getElementById('dashboard-link-mobile');
             const mainLinks = document.querySelectorAll('.main-link');
-            
+
             const showDashboard = () => {
                 mainContent.classList.add('hidden');
                 dashboardContent.classList.remove('hidden');
                 window.scrollTo(0, 0);
-                // Initialize dashboard components
-                updateDashUI();
-                setupDotListeners();
             };
-            
+
             const showMainContent = () => {
                 dashboardContent.classList.add('hidden');
                 mainContent.classList.remove('hidden');
             };
-            
+
             dashboardLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                openLoginModal();
+                showDashboard();
             });
-            
-            if (dashboardLinkMobile) {
-                dashboardLinkMobile.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    openLoginModal();
-                    // Close mobile menu
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-                    if (mobileMenu) mobileMenu.classList.remove('active');
-                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-                });
-            }
-            
-            // Event delegation for main links
-            document.addEventListener('click', function(e) {
-                if (e.target.closest('.main-link')) {
+
+            mainLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
                     e.preventDefault(); // Prevent default anchor behavior
-                    const link = e.target.closest('.main-link');
                     const targetId = link.getAttribute('href');
                     const targetElement = document.querySelector(targetId);
                     
                     if (dashboardContent.classList.contains('hidden')) {
                          if(targetElement) {
-                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                           targetElement.scrollIntoView({ behavior: 'smooth' });
                         }
                     } else {
                         showMainContent();
                         setTimeout(() => {
-                             if(targetElement) {
-                                targetElement.scrollIntoView({ behavior: 'smooth' });
+                            if(targetElement) {
+                               targetElement.scrollIntoView({ behavior: 'smooth' });
                             }
                         }, 50);
                     }
-                    
-                    // Close mobile menu if open
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-                    if (mobileMenu) mobileMenu.classList.remove('active');
-                    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
-                }
+                });
             });
-            
-            // --- MOBILE MENU LOGIC ---
-            const mobileMenuButton = document.querySelector('.mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
-            const mobileMenuClose = document.querySelector('.mobile-menu-close');
-            
-            if (mobileMenuButton) {
-                mobileMenuButton.addEventListener('click', () => {
-                    mobileMenu.classList.add('active');
-                    mobileMenuOverlay.classList.add('active');
-                });
-            }
-            
-            if (mobileMenuClose) {
-                mobileMenuClose.addEventListener('click', () => {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuOverlay.classList.remove('active');
-                });
-            }
-            
-            if (mobileMenuOverlay) {
-                mobileMenuOverlay.addEventListener('click', () => {
-                    mobileMenu.classList.remove('active');
-                    mobileMenuOverlay.classList.remove('active');
-                });
-            }
-            
-            // Mobile dropdowns
-            const mobileDropdowns = document.querySelectorAll('.mobile-dropdown');
-            mobileDropdowns.forEach(dropdown => {
-                const button = dropdown.querySelector('button');
-                const content = dropdown.querySelector('div');
-                
-                if (button && content) {
-                    button.addEventListener('click', () => {
-                        const isExpanded = button.getAttribute('aria-expanded') === 'true';
-                        button.setAttribute('aria-expanded', !isExpanded);
-                        content.classList.toggle('hidden');
-                        
-                        // Rotate arrow icon
-                        const arrow = button.querySelector('svg');
-                        if (arrow) {
-                            if (isExpanded) {
-                                arrow.style.transform = 'rotate(0deg)';
-                            } else {
-                                arrow.style.transform = 'rotate(180deg)';
-                            }
-                        }
-                    });
-                }
-            });
-            
-            // --- DROPDOWN MENU LOGIC ---
-            const solutionDropdown = document.getElementById('solution-dropdown');
-            const companyDropdown = document.getElementById('company-dropdown');
-            
-            // Function to close all dropdowns
-            const closeAllDropdowns = () => {
-                document.querySelectorAll('.dropdown').forEach(dropdown => {
-                    dropdown.classList.remove('active');
-                });
-            };
-            
-            // Solution dropdown
-            if (solutionDropdown) {
-                const solutionToggle = solutionDropdown.querySelector('.dropdown-toggle');
-                
-                solutionToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const isActive = solutionDropdown.classList.contains('active');
-                    closeAllDropdowns();
-                    
-                    if (!isActive) {
-                        solutionDropdown.classList.add('active');
-                    }
-                });
-                
-                // Add keyboard navigation
-                solutionToggle.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        solutionToggle.click();
-                    }
-                });
-            }
-            
-            // Company dropdown
-            if (companyDropdown) {
-                const companyToggle = companyDropdown.querySelector('.dropdown-toggle');
-                
-                companyToggle.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    
-                    const isActive = companyDropdown.classList.contains('active');
-                    closeAllDropdowns();
-                    
-                    if (!isActive) {
-                        companyDropdown.classList.add('active');
-                    }
-                });
-                
-                // Add keyboard navigation
-                companyToggle.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        companyToggle.click();
-                    }
-                });
-            }
-            
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', () => {
-                closeAllDropdowns();
-            });
-            
+
             // --- MAIN WEBSITE SCRIPT ---
-            
-            // Scroll reveal animation with fallback for older browsers
             const scrollObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1704,21 +1218,13 @@
                 });
             }, { threshold: 0.1 });
 
-            // Fallback for browsers that don't support IntersectionObserver
-            if (!('IntersectionObserver' in window)) {
-                document.querySelectorAll('.scroll-reveal').forEach(el => {
-                    el.classList.add('visible');
-                });
-            } else {
-                document.querySelectorAll('.scroll-reveal').forEach(el => {
-                    scrollObserver.observe(el);
-                });
-            }
-            
-            // Navigation active state
+            document.querySelectorAll('.scroll-reveal').forEach(el => {
+                scrollObserver.observe(el);
+            });
+
             const navLinks = document.querySelectorAll('.nav-link');
             const sections = document.querySelectorAll('#main-content section, #main-content footer');
-            
+
             const navObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1732,27 +1238,19 @@
                     }
                 });
             }, { rootMargin: '-40% 0px -60% 0px' });
-            
+
             sections.forEach(section => {
                 navObserver.observe(section);
             });
-            
-            // Industry tabs
+
             const industryTabNav = document.getElementById('industry-tab-nav');
             const industryTabContents = document.querySelectorAll('.industry-tab-content');
             const industryTabButtons = document.querySelectorAll('.industry-tab');
             let educationChart = null;
-            
+
             const initEducationChart = () => {
                 const ctx = document.getElementById('educationChart');
                 if (!ctx) return;
-                
-                // Check if Chart is defined
-                if (typeof Chart === 'undefined') {
-                    console.error('Chart.js is not loaded');
-                    return;
-                }
-                
                 if (educationChart) educationChart.destroy();
                 educationChart = new Chart(ctx, {
                     type: 'doughnut',
@@ -1767,16 +1265,10 @@
                         }]
                     },
                     options: {
-                        responsive: true, 
-                        maintainAspectRatio: false,
+                        responsive: true, maintainAspectRatio: false,
                         plugins: {
                             legend: { position: 'bottom' },
-                            title: { 
-                                display: true, 
-                                text: 'Key Drivers of Educational Excellence', 
-                                font: { family: "'Inter', sans-serif", size: 14, weight: '600' }, 
-                                color: '#1e293b' 
-                            }
+                            title: { display: true, text: 'Key Drivers of Educational Excellence', font: { family: "'Inter', sans-serif", size: 14, weight: '600' }, color: '#1e293b' }
                         }
                     }
                 });
@@ -1786,24 +1278,15 @@
                 industryTabNav.addEventListener('click', (e) => {
                     if (e.target.matches('.industry-tab')) {
                         const tabId = e.target.dataset.tab;
-                        
-                        // Update button states
                         industryTabButtons.forEach(btn => {
                             btn.classList.remove('industry-tab-active');
                             btn.classList.add('industry-tab-inactive');
-                            btn.setAttribute('aria-selected', 'false');
                         });
                         e.target.classList.add('industry-tab-active');
                         e.target.classList.remove('industry-tab-inactive');
-                        e.target.setAttribute('aria-selected', 'true');
-                        
-                        // Update content visibility
                         industryTabContents.forEach(content => {
                             content.classList.toggle('hidden', content.id !== tabId);
-                            content.setAttribute('aria-hidden', content.id !== tabId);
                         });
-                        
-                        // Initialize chart if education tab is selected
                         if (tabId === 'education') {
                             setTimeout(initEducationChart, 50);
                         }
@@ -1811,7 +1294,6 @@
                 });
             }
             
-            // FAQ Accordion
             const accordion = document.getElementById('faq-accordion');
             if(accordion) {
                 accordion.addEventListener('click', (e) => {
@@ -1819,79 +1301,27 @@
                     if (button) {
                         const isExpanded = button.getAttribute('aria-expanded') === 'true';
                         button.setAttribute('aria-expanded', !isExpanded);
-                        
-                        const content = button.nextElementSibling;
-                        if (content) {
-                            content.style.maxHeight = isExpanded ? '0px' : content.scrollHeight + 'px';
-                            content.setAttribute('aria-hidden', isExpanded);
-                        }
+                        const content = button.parentElement.nextElementSibling;
+                        content.style.maxHeight = isExpanded ? '0px' : content.scrollHeight + 'px';
                     }
                 });
             }
-            
+
             // --- DASHBOARD SCRIPT ---
-            const aqiThresholds = [ 
-                { max: 50, status: 'Excellent', color: '#10B981' }, 
-                { max: 100, status: 'Good', color: '#10B981' }, 
-                { max: 150, status: 'Moderate', color: '#F59E0B' }, 
-                { max: 200, status: 'Poor', color: '#EF4444' }, 
-                { max: 300, status: 'Unhealthy', color: '#EF4444' }, 
-                { max: Infinity, status: 'Hazardous', color: '#EF4444' }
-            ];
-            
+            const aqiThresholds = [ { max: 50, status: 'Excellent', color: '#10B981' }, { max: 100, status: 'Good', color: '#10B981' }, { max: 150, status: 'Moderate', color: '#F59E0B' }, { max: 200, status: 'Poor', color: '#EF4444' }, { max: 300, status: 'Unhealthy', color: '#EF4444' }, { max: Infinity, status: 'Hazardous', color: '#EF4444' }];
             const pollutantData = {
-                pm25: { 
-                    unit: 'µg/m³', 
-                    thresholds: [ 
-                        { max: 12, status: 'Good', color: '#10B981', gaugeMax: 50, desc: 'PM2.5 levels are low. Air quality is satisfactory, posing little to no risk.' }, 
-                        { max: 35, status: 'Moderate', color: '#F59E0B', gaugeMax: 50, desc: 'PM2.5 levels are elevated. Sensitive individuals may experience minor health effects.' }, 
-                        { max: Infinity, status: 'Unhealthy', color: '#EF4444', gaugeMax: 50, desc: 'PM2.5 levels are high. Everyone may begin to experience health effects.' } 
-                    ] 
-                },
-                co2: { 
-                    unit: 'ppm', 
-                    thresholds: [ 
-                        { max: 800, status: 'Excellent', color: '#10B981', gaugeMax: 2000, desc: 'CO₂ levels are optimal, promoting focus and well-being.' }, 
-                        { max: 1200, status: 'Moderate', color: '#F59E0B', gaugeMax: 2000, desc: 'CO₂ levels are slightly elevated, may cause drowsiness. Increased ventilation is recommended.' }, 
-                        { max: Infinity, status: 'High', color: '#EF4444', gaugeMax: 2000, desc: 'CO₂ levels are high, indicating poor ventilation. Immediate action is required.' } 
-                    ] 
-                },
-                vocs: { 
-                    unit: 'ppb', 
-                    thresholds: [ 
-                        { max: 100, status: 'Good', color: '#10B981', gaugeMax: 300, desc: 'VOC levels are low, contributing to a healthy indoor environment.' }, 
-                        { max: 200, status: 'Moderate', color: '#F59E0B', gaugeMax: 300, desc: 'VOC levels are moderate. Some individuals may experience mild irritation.' }, 
-                        { max: Infinity, status: 'High', color: '#EF4444', gaugeMax: 300, desc: 'VOC levels are high and can cause significant health issues. Immediate investigation is necessary.' } 
-                    ] 
-                },
-                ozone: { 
-                    unit: 'ppb', 
-                    thresholds: [ 
-                        { max: 50, status: 'Good', color: '#10B981', gaugeMax: 100, desc: 'Ozone levels are low and safe.' }, 
-                        { max: 100, status: 'Moderate', color: '#F59E0B', gaugeMax: 100, desc: 'Ozone levels are moderate. Sensitive individuals may experience respiratory symptoms.' }, 
-                        { max: Infinity, status: 'Unhealthy', color: '#EF4444', gaugeMax: 100, desc: 'Ozone levels are unhealthy and can cause significant respiratory irritation.' } 
-                    ] 
-                }
+                pm25: { unit: 'µg/m³', thresholds: [ { max: 12, status: 'Good', color: '#10B981', gaugeMax: 50, desc: 'PM2.5 levels are low. Air quality is satisfactory, posing little to no risk.' }, { max: 35, status: 'Moderate', color: '#F59E0B', gaugeMax: 50, desc: 'PM2.5 levels are elevated. Sensitive individuals may experience minor health effects.' }, { max: Infinity, status: 'Unhealthy', color: '#EF4444', gaugeMax: 50, desc: 'PM2.5 levels are high. Everyone may begin to experience health effects.' } ] },
+                co2: { unit: 'ppm', thresholds: [ { max: 800, status: 'Excellent', color: '#10B981', gaugeMax: 2000, desc: 'CO₂ levels are optimal, promoting focus and well-being.' }, { max: 1200, status: 'Moderate', color: '#F59E0B', gaugeMax: 2000, desc: 'CO₂ levels are slightly elevated, may cause drowsiness. Increased ventilation is recommended.' }, { max: Infinity, status: 'High', color: '#EF4444', gaugeMax: 2000, desc: 'CO₂ levels are high, indicating poor ventilation. Immediate action is required.' } ] },
+                vocs: { unit: 'ppb', thresholds: [ { max: 100, status: 'Good', color: '#10B981', gaugeMax: 300, desc: 'VOC levels are low, contributing to a healthy indoor environment.' }, { max: 200, status: 'Moderate', color: '#F59E0B', gaugeMax: 300, desc: 'VOC levels are moderate. Some individuals may experience mild irritation.' }, { max: Infinity, status: 'High', color: '#EF4444', gaugeMax: 300, desc: 'VOC levels are high and can cause significant health issues. Immediate investigation is necessary.' } ] },
+                ozone: { unit: 'ppb', thresholds: [ { max: 50, status: 'Good', color: '#10B981', gaugeMax: 100, desc: 'Ozone levels are low and safe.' }, { max: 100, status: 'Moderate', color: '#F59E0B', gaugeMax: 100, desc: 'Ozone levels are moderate. Sensitive individuals may experience respiratory symptoms.' }, { max: Infinity, status: 'Unhealthy', color: '#EF4444', gaugeMax: 100, desc: 'Ozone levels are unhealthy and can cause significant respiratory irritation.' } ] }
             };
-            
+
             function getPollutantInfo(value, type) {
                 const thresholds = type === 'aqi' ? aqiThresholds : (pollutantData[type]?.thresholds || []);
-                for (const t of thresholds) { 
-                    if (value <= t.max) return { 
-                        status: t.status, 
-                        color: t.color, 
-                        gaugeMax: t.gaugeMax, 
-                        desc: t.desc 
-                    }; 
-                }
-                return { 
-                    status: 'Unknown', 
-                    color: '#4B5563', 
-                    gaugeMax: 100, 
-                    desc: 'Info not available.' 
-                };
+                for (const t of thresholds) { if (value <= t.max) return { status: t.status, color: t.color, gaugeMax: t.gaugeMax, desc: t.desc }; }
+                return { status: 'Unknown', color: '#4B5563', gaugeMax: 100, desc: 'Info not available.' };
             }
-            
+
             function updateRadialGauge(elId, val, max, color) {
                 const gauge = document.getElementById(elId);
                 if (!gauge) return;
@@ -1901,68 +1331,37 @@
                 gauge.style.strokeDashoffset = circ - (pct / 100) * circ;
                 gauge.style.stroke = color;
             }
-            
+
             function updateSparkline(data, color) {
                 const svgW = 300, svgH = 50, max = Math.max(...data), min = Math.min(...data), range = max - min || 1, stepX = svgW / (data.length - 1);
                 let pathD = `M0,${svgH - ((data[0] - min) / range) * (svgH - 10) - 5}`;
                 for (let i = 1; i < data.length; i++) pathD += ` L${i * stepX},${svgH - ((data[i] - min) / range) * (svgH - 10) - 5}`;
                 const fillD = `${pathD} L${svgW},${svgH} L0,${svgH} Z`;
-                const lineEl = document.getElementById('sparkline-line-path');
-                const fillEl = document.getElementById('sparkline-fill-path');
-                if (lineEl && fillEl) { 
-                    lineEl.setAttribute('d', pathD); 
-                    fillEl.setAttribute('d', fillD); 
-                    lineEl.style.stroke = color; 
-                    fillEl.style.fill = `${color}1A`; 
-                }
+                const lineEl = document.getElementById('sparkline-line-path'), fillEl = document.getElementById('sparkline-fill-path');
+                if (lineEl && fillEl) { lineEl.setAttribute('d', pathD); fillEl.setAttribute('d', fillD); lineEl.style.stroke = color; fillEl.style.fill = `${color}1A`; }
             }
-            
-            let dashData = { 
-                aqi: 62, 
-                pm25: 22, 
-                co2: 920, 
-                vocs: 160, 
-                ozone: 40, 
-                trend: Array.from({length: 20}, () => 60 + (Math.random() - 0.5) * 20) 
-            };
+
+            let dashData = { aqi: 62, pm25: 22, co2: 920, vocs: 160, ozone: 40, trend: Array.from({length: 20}, () => 60 + (Math.random() - 0.5) * 20) };
             
             function updateDashUI() {
-                try {
-                    // Update AQI
-                    const { status, color } = getPollutantInfo(dashData.aqi, 'aqi');
-                    const aqiElement = document.getElementById('overall-aqi');
-                    const statusElement = document.getElementById('overall-status');
-                    
-                    if (aqiElement) aqiElement.textContent = dashData.aqi;
-                    if (statusElement) {
-                        statusElement.textContent = status;
-                        statusElement.style.color = color;
-                    }
-                    
-                    updateSparkline(dashData.trend, color);
-                    
-                    // Update pollutants
-                    Object.keys(pollutantData).forEach(p => {
-                        const info = getPollutantInfo(dashData[p], p);
-                        const valueElement = document.getElementById(`${p}-value`);
-                        const statusElement = document.getElementById(`${p}-status`);
-                        
-                        if (valueElement) valueElement.textContent = `${dashData[p]} ${pollutantData[p].unit}`;
-                        
-                        if (statusElement) {
-                            statusElement.innerHTML = `${info.status} <button class="know-more-icon text-gray-400 ml-1" data-pollutant="${p}" aria-label="More information about ${p}"><i class="fas fa-info-circle"></i></button>`;
-                            statusElement.style.color = info.color;
-                        }
-                        
-                        updateRadialGauge(`${p}-gauge`, dashData[p], info.gaugeMax, info.color);
-                    });
-                    
-                    updateDateTime();
-                } catch (error) {
-                    console.error('Error updating dashboard UI:', error);
-                }
+                const { status, color } = getPollutantInfo(dashData.aqi, 'aqi');
+                document.getElementById('overall-aqi').textContent = dashData.aqi;
+                const overallStatusEl = document.getElementById('overall-status');
+                overallStatusEl.textContent = status;
+                overallStatusEl.style.color = color;
+                updateSparkline(dashData.trend, color);
+                
+                Object.keys(pollutantData).forEach(p => {
+                    const info = getPollutantInfo(dashData[p], p);
+                    document.getElementById(`${p}-value`).textContent = `${dashData[p]} ${pollutantData[p].unit}`;
+                    const statusEl = document.getElementById(`${p}-status`);
+                    statusEl.innerHTML = `${info.status} <i class="fas fa-info-circle text-gray-400 ml-1 cursor-pointer know-more-icon" data-pollutant="${p}"></i>`;
+                    statusEl.style.color = info.color;
+                    updateRadialGauge(`${p}-gauge`, dashData[p], info.gaugeMax, info.color);
+                });
+                updateDateTime();
             }
-            
+
             function simulateData() {
                 dashData.aqi = Math.max(20, Math.min(120, dashData.aqi + Math.floor(Math.random() * 10) - 5));
                 dashData.pm25 = Math.max(5, Math.min(45, dashData.pm25 + Math.floor(Math.random() * 5) - 2));
@@ -1973,379 +1372,145 @@
                 dashData.trend.push(dashData.aqi);
                 updateDashUI();
             }
-            
+
             function updateDateTime() {
-                try {
-                    const now = new Date();
-                    const dtOpts = { 
-                        weekday: 'long', 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric', 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                    };
-                    const datetimeElement = document.getElementById('current-datetime');
-                    const lastUpdatedElement = document.getElementById('last-updated');
-                    
-                    if (datetimeElement) datetimeElement.textContent = now.toLocaleDateString('en-US', dtOpts);
-                    if (lastUpdatedElement) lastUpdatedElement.textContent = now.toLocaleTimeString('en-US');
-                } catch (error) {
-                    console.error('Error updating date/time:', error);
-                }
+                const now = new Date();
+                const dtOpts = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                document.getElementById('current-datetime').textContent = now.toLocaleDateString('en-US', dtOpts);
+                document.getElementById('last-updated').textContent = now.toLocaleTimeString('en-US');
             }
-            
-            // Initialize dashboard UI
+
             updateDashUI();
             setInterval(simulateData, 5000);
-            
+
             // Floor plan logic
             const floorPopup = document.getElementById('floor-plan-popup');
             const roomModal = document.getElementById('room-details-modal');
             const roomModalClose = document.getElementById('room-details-close-btn');
-            
+
             function updateOccupancyVisuals() {
-                try {
-                    document.querySelectorAll('.floor-plan-svg:not(.hidden) .room-dot').forEach(dot => {
-                        const icon = dot.nextElementSibling;
-                        if (icon && icon.classList.contains('occupancy-icon')) {
-                            icon.style.display = dot.dataset.occupied === 'true' ? 'block' : 'none';
-                        }
-                    });
-                } catch (error) {
-                    console.error('Error updating occupancy visuals:', error);
-                }
+                document.querySelectorAll('.floor-plan-svg:not(.hidden) .room-dot').forEach(dot => {
+                    const icon = dot.nextElementSibling;
+                    if (icon && icon.classList.contains('occupancy-icon')) {
+                        icon.style.display = dot.dataset.occupied === 'true' ? 'block' : 'none';
+                    }
+                });
             }
-            
+
             function setupDotListeners() {
-                try {
-                    document.querySelectorAll('.floor-plan-svg:not(.hidden) .room-dot').forEach(dot => {
-                        // Mouseover event
-                        dot.addEventListener('mouseover', function(e) {
-                            const data = e.target.dataset;
-                            const aqiInfo = getPollutantInfo(data.aqi, 'aqi');
-                            const occupied = data.occupied === 'true' ? 'Occupied' : 'Empty';
-                            const occupancyColor = data.occupied === 'true' ? '#1F2937' : '#9CA3AF';
-                            
-                            if (floorPopup) {
-                                floorPopup.innerHTML = `
-                                    <p class="font-semibold">${data.roomName}</p>
-                                    <p class="text-sm">Status: <span style="color: ${occupancyColor}; font-weight: bold;">${occupied}</span></p>
-                                    <p class="text-sm">AQI: ${data.aqi} <span style="color: ${aqiInfo.color}; font-weight: bold;">(${aqiInfo.status})</span></p>
-                                `;
-                                
-                                floorPopup.classList.remove('hidden');
-                                floorPopup.classList.add('active');
-                                
-                                const dotRect = e.target.getBoundingClientRect();
-                                const containerRect = e.target.closest('.relative').getBoundingClientRect();
-                                floorPopup.style.left = `${dotRect.left - containerRect.left + 15}px`;
-                                floorPopup.style.top = `${dotRect.top - containerRect.top - 60}px`;
-                            }
-                        });
-                        
-                        // Mouseout event
-                        dot.addEventListener('mouseout', function() {
-                            if (floorPopup) {
-                                floorPopup.classList.remove('active');
-                                setTimeout(() => { 
-                                    if (!floorPopup.classList.contains('active')) {
-                                        floorPopup.classList.add('hidden');
-                                    }
-                                }, 200);
-                            }
-                        });
-                        
-                        // Click event
-                        dot.addEventListener('click', function(e) {
-                            const data = e.target.dataset;
-                            
-                            // Update modal content
-                            const titleElement = document.getElementById('room-details-title');
-                            const occupancyElement = document.getElementById('room-details-occupancy');
-                            const aqiElement = document.getElementById('room-details-aqi');
-                            const aqiStatusElement = document.getElementById('room-details-aqi-status');
-                            
-                            if (titleElement) titleElement.textContent = `${data.roomName} Details`;
-                            
-                            // Handle Occupancy
-                            const occupied = data.occupied === 'true' ? 'Occupied' : 'Empty';
-                            const occupancyColor = data.occupied === 'true' ? '#1F2937' : '#9CA3AF';
-                            if (occupancyElement) {
-                                occupancyElement.textContent = occupied;
-                                occupancyElement.style.color = occupancyColor;
-                            }
-                            
-                            // Handle AQI
-                            const aqiInfo = getPollutantInfo(data.aqi, 'aqi');
-                            if (aqiElement) aqiElement.textContent = data.aqi;
-                            if (aqiStatusElement) {
-                                aqiStatusElement.textContent = aqiInfo.status;
-                                aqiStatusElement.style.color = aqiInfo.color;
-                            }
-                            
-                            // Handle other pollutants
-                            ['pm25', 'co2', 'vocs'].forEach(p => {
-                                const info = getPollutantInfo(data[p], p);
-                                const valueElement = document.getElementById(`room-details-${p}`);
-                                const statusElement = document.getElementById(`room-details-${p}-status`);
-                                
-                                if (valueElement) valueElement.textContent = `${data[p]} ${pollutantData[p].unit}`;
-                                if (statusElement) {
-                                    statusElement.textContent = info.status;
-                                    statusElement.style.color = info.color;
-                                }
-                            });
-                            
-                            // Show modal
-                            if (roomModal) {
-                                roomModal.classList.add('active');
-                                document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-                            }
-                        });
-                        
-                        // Keyboard accessibility
-                        dot.addEventListener('keydown', function(e) {
-                            if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                dot.click();
-                            }
-                        });
+                document.querySelectorAll('.floor-plan-svg:not(.hidden) .room-dot').forEach(dot => {
+                    dot.addEventListener('mouseover', e => {
+                        const data = e.target.dataset;
+                        const aqiInfo = getPollutantInfo(data.aqi, 'aqi');
+                        const occupied = data.occupied === 'true' ? 'Occupied' : 'Empty';
+                        const occupancyColor = data.occupied === 'true' ? '#1F2937' : '#9CA3AF';
+                        floorPopup.innerHTML = `<p class="font-semibold">${data.roomName}</p><p class="text-sm">Status: <span style="color: ${occupancyColor}; font-weight: bold;">${occupied}</span></p><p class="text-sm">AQI: ${data.aqi} <span style="color: ${aqiInfo.color}; font-weight: bold;">(${aqiInfo.status})</span></p>`;
+                        floorPopup.classList.remove('hidden');
+                        floorPopup.classList.add('active');
+                        const dotRect = e.target.getBoundingClientRect();
+                        const containerRect = e.target.closest('.relative').getBoundingClientRect();
+                        floorPopup.style.left = `${dotRect.left - containerRect.left + 15}px`;
+                        floorPopup.style.top = `${dotRect.top - containerRect.top - 60}px`;
                     });
-                    
-                    updateOccupancyVisuals();
-                } catch (error) {
-                    console.error('Error setting up dot listeners:', error);
-                }
-            }
-            
-            if (roomModalClose) {
-                roomModalClose.addEventListener('click', () => {
-                    if (roomModal) {
-                        roomModal.classList.remove('active');
-                        document.body.style.overflow = ''; // Restore scrolling
-                    }
+                    dot.addEventListener('mouseout', () => {
+                        floorPopup.classList.remove('active');
+                        setTimeout(() => { if (!floorPopup.classList.contains('active')) floorPopup.classList.add('hidden'); }, 200);
+                    });
+                    dot.addEventListener('click', e => {
+                        const data = e.target.dataset;
+                        document.getElementById('room-details-title').textContent = `${data.roomName} Details`;
+                        const occupied = data.occupied === 'true' ? 'Occupied' : 'Empty';
+                        const occupancyColor = data.occupied === 'true' ? '#1F2937' : '#9CA3AF';
+                        const occupancyEl = document.getElementById('room-details-occupancy');
+                        occupancyEl.textContent = occupied;
+                        occupancyEl.style.color = occupancyColor;
+
+                        ['aqi', 'pm25', 'co2', 'vocs'].forEach(p => {
+                            const info = getPollutantInfo(data[p], p);
+                            document.getElementById(`room-details-${p}`).textContent = `${data[p]} ${pollutantData[p]?.unit || ''}`;
+                            const statusEl = document.getElementById(`room-details-${p}-status`);
+                            statusEl.textContent = info.status;
+                            statusEl.style.color = info.color;
+                        });
+                        roomModal.classList.add('active');
+                    });
                 });
+                updateOccupancyVisuals();
             }
             
-            if (roomModal) {
-                roomModal.addEventListener('click', e => { 
-                    if(e.target === roomModal) {
-                        roomModal.classList.remove('active');
-                        document.body.style.overflow = ''; // Restore scrolling
-                    }
-                });
-            }
-            
-            // Floor buttons
+            roomModalClose.addEventListener('click', () => roomModal.classList.remove('active'));
+            roomModal.addEventListener('click', e => { if(e.target === roomModal) roomModal.classList.remove('active'); });
+
             document.querySelectorAll('.floor-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const targetId = `floor-plan-${btn.id.replace('floor','').replace('-btn','')}`;
-                    
-                    // Update button states
-                    document.querySelectorAll('.floor-btn').forEach(b => { 
-                        b.classList.remove('bg-[#0369A1]', 'text-white'); 
-                        b.classList.add('bg-gray-200', 'text-gray-700');
-                        b.setAttribute('aria-selected', 'false');
-                    });
-                    
-                    // Update floor plan visibility
+                    document.querySelectorAll('.floor-btn').forEach(b => { b.classList.remove('bg-[#0369A1]', 'text-white'); b.classList.add('bg-gray-200', 'text-gray-700'); });
                     document.querySelectorAll('.floor-plan-svg').forEach(p => p.classList.add('hidden'));
-                    const targetFloor = document.getElementById(targetId);
-                    if (targetFloor) {
-                        targetFloor.classList.remove('hidden');
-                    }
-                    
+                    document.getElementById(targetId).classList.remove('hidden');
                     btn.classList.add('bg-[#0369A1]', 'text-white');
                     btn.classList.remove('bg-gray-200', 'text-gray-700');
-                    btn.setAttribute('aria-selected', 'true');
-                    
                     setupDotListeners();
                 });
             });
-            
+            setupDotListeners();
+
             // Modals Logic
             document.body.addEventListener('click', e => {
                 const knowMoreIcon = e.target.closest('.know-more-icon');
                 if (knowMoreIcon) {
                     const pType = knowMoreIcon.dataset.pollutant;
                     const { status, color, desc } = getPollutantInfo(dashData[pType], pType);
-                    
-                    const modalTitle = document.getElementById('modal-title');
-                    const modalValue = document.getElementById('modal-pollutant-value');
-                    const modalDesc = document.getElementById('modal-description');
-                    const knowMoreModal = document.getElementById('know-more-modal');
-                    
-                    if (modalTitle) modalTitle.textContent = `About ${pType.toUpperCase()}`;
-                    if (modalValue) {
-                        modalValue.textContent = `Current: ${dashData[pType]} ${pollutantData[pType].unit} (${status})`;
-                        modalValue.style.color = color;
-                    }
-                    if (modalDesc) modalDesc.textContent = desc;
-                    if (knowMoreModal) {
-                        knowMoreModal.classList.add('active');
-                        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-                    }
+                    document.getElementById('modal-title').textContent = `About ${pType.toUpperCase()}`;
+                    const valEl = document.getElementById('modal-pollutant-value');
+                    valEl.textContent = `Current: ${dashData[pType]} ${pollutantData[pType].unit} (${status})`;
+                    valEl.style.color = color;
+                    document.getElementById('modal-description').textContent = desc;
+                    document.getElementById('know-more-modal').classList.add('active');
                 }
             });
-            
             const knowMoreModal = document.getElementById('know-more-modal');
-            const modalCloseBtn = document.getElementById('modal-close-btn');
-            
-            if (modalCloseBtn) {
-                modalCloseBtn.addEventListener('click', () => {
-                    if (knowMoreModal) {
-                        knowMoreModal.classList.remove('active');
-                        document.body.style.overflow = ''; // Restore scrolling
-                    }
-                });
-            }
-            
-            if (knowMoreModal) {
-                knowMoreModal.addEventListener('click', e => { 
-                    if(e.target === knowMoreModal) {
-                        knowMoreModal.classList.remove('active');
-                        document.body.style.overflow = ''; // Restore scrolling
-                    }
-                });
-            }
-            
+            document.getElementById('modal-close-btn').addEventListener('click', () => knowMoreModal.classList.remove('active'));
+            knowMoreModal.addEventListener('click', e => { if(e.target === knowMoreModal) knowMoreModal.classList.remove('active'); });
+
             // Notifications Logic
             const bellIcon = document.getElementById('bell-icon');
             const notificationsModal = document.getElementById('notifications-modal');
             const notificationsCloseBtn = document.getElementById('notifications-close-btn');
             const notificationList = document.getElementById('notification-list');
             const notificationCount = document.getElementById('notification-count');
-            
-            let notifications = [ 
-                { 
-                    id: 1, 
-                    type: 'alert', 
-                    icon: 'fas fa-exclamation-circle', 
-                    color: '#EF4444', 
-                    message: 'Urgent: PM2.5 in Meeting Pods is unhealthy (AQI 95).', 
-                    timestamp: '5 mins ago', 
-                    read: false 
-                }, 
-                { 
-                    id: 2, 
-                    type: 'warning', 
-                    icon: 'fas fa-exclamation-triangle', 
-                    color: '#F59E0B', 
-                    message: 'Warning: CO₂ in Conf. Room B elevated.', 
-                    timestamp: '1 hour ago', 
-                    read: false 
-                }, 
-                { 
-                    id: 3, 
-                    type: 'info', 
-                    icon: 'fas fa-info-circle', 
-                    color: '#0369A1', 
-                    message: 'Maintenance: Sensor calibration for Workspace 1 next Tuesday.', 
-                    timestamp: 'Yesterday', 
-                    read: false 
-                }, 
-                { 
-                    id: 4, 
-                    type: 'success', 
-                    icon: 'fas fa-check-circle', 
-                    color: '#10B981', 
-                    message: 'System Update: All sensors updated to v2.1.', 
-                    timestamp: '2 days ago', 
-                    read: true 
-                } 
-            ];
-            
+            let notifications = [ { id: 1, type: 'alert', icon: 'fas fa-exclamation-circle', color: '#EF4444', message: 'Urgent: PM2.5 in Meeting Pods is unhealthy (AQI 95).', timestamp: '5 mins ago', read: false }, { id: 2, type: 'warning', icon: 'fas fa-exclamation-triangle', color: '#F59E0B', message: 'Warning: CO₂ in Conf. Room B elevated.', timestamp: '1 hour ago', read: false }, { id: 3, type: 'info', icon: 'fas fa-info-circle', color: '#0369A1', message: 'Maintenance: Sensor calibration for Workspace 1 next Tuesday.', timestamp: 'Yesterday', read: false }, { id: 4, type: 'success', icon: 'fas fa-check-circle', color: '#10B981', message: 'System Update: All sensors updated to v2.1.', timestamp: '2 days ago', read: true }];
             let currentFilter = 'all';
-            
+
             function renderNotifications() {
-                if (!notificationList) return;
-                
                 notificationList.innerHTML = '';
-                
                 const filtered = notifications.filter(n => {
                     if (currentFilter === 'unread') return !n.read;
                     if (currentFilter === 'alerts') return n.type === 'alert' || n.type === 'warning';
                     return true;
                 });
-                
                 filtered.forEach(n => {
                     const item = document.createElement('div');
                     item.className = `notification-item ${n.read ? '' : 'unread'}`;
-                    item.setAttribute('role', 'listitem');
-                    item.innerHTML = `
-                        <i class="${n.icon} text-lg mt-1" style="color: ${n.color};" aria-hidden="true"></i>
-                        <div class="ml-4">
-                            <p class="text-sm font-medium text-[#1F2937]">${n.message}</p>
-                            <p class="text-xs text-gray-400 mt-1">${n.timestamp}</p>
-                        </div>
-                    `;
-                    
-                    item.addEventListener('click', () => {
-                        n.read = true;
-                        renderNotifications();
-                    });
-                    
+                    item.innerHTML = `<i class="${n.icon} text-lg mt-1" style="color: ${n.color};"></i><div><p class="text-sm font-medium text-[#1F2937]">${n.message}</p><p class="text-xs text-gray-400 mt-1">${n.timestamp}</p></div>`;
+                    item.onclick = () => { n.read = true; renderNotifications(); };
                     notificationList.appendChild(item);
                 });
-                
                 const unreadCount = notifications.filter(n => !n.read).length;
-                if (notificationCount) {
-                    notificationCount.textContent = unreadCount > 0 ? unreadCount : '';
-                    notificationCount.style.display = unreadCount > 0 ? 'flex' : 'none';
-                }
+                notificationCount.textContent = unreadCount > 0 ? unreadCount : '';
+                notificationCount.style.display = unreadCount > 0 ? 'flex' : 'none';
             }
-            
-            // Filter buttons
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-btn').forEach(b => {
-                        b.classList.remove('active');
-                        b.setAttribute('aria-selected', 'false');
-                    });
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    btn.setAttribute('aria-selected', 'true');
                     currentFilter = btn.dataset.filter;
                     renderNotifications();
                 });
             });
-            
-            if (bellIcon) {
-                bellIcon.addEventListener('click', () => { 
-                    renderNotifications(); 
-                    if (notificationsModal) {
-                        notificationsModal.classList.add('active');
-                        document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-                    }
-                });
-            }
-            
-            if (notificationsCloseBtn) {
-                notificationsCloseBtn.addEventListener('click', () => {
-                    if (notificationsModal) {
-                        notificationsModal.classList.remove('active');
-                        document.body.style.overflow = ''; // Restore scrolling
-                    }
-                });
-            }
-            
-            if (notificationsModal) {
-                notificationsModal.addEventListener('click', e => { 
-                    if(e.target === notificationsModal) {
-                        notificationsModal.classList.remove('active');
-                        document.body.style.overflow = ''; // Restore scrolling
-                    }
-                });
-            }
-            
-            const markAllReadBtn = document.getElementById('mark-all-read-btn');
-            if (markAllReadBtn) {
-                markAllReadBtn.addEventListener('click', () => { 
-                    notifications.forEach(n => n.read = true); 
-                    renderNotifications(); 
-                });
-            }
-            
+            bellIcon.addEventListener('click', () => { renderNotifications(); notificationsModal.classList.add('active'); });
+            notificationsCloseBtn.addEventListener('click', () => notificationsModal.classList.remove('active'));
+            notificationsModal.addEventListener('click', e => { if(e.target === notificationsModal) notificationsModal.classList.remove('active'); });
+            document.getElementById('mark-all-read-btn').addEventListener('click', () => { notifications.forEach(n => n.read = true); renderNotifications(); });
             renderNotifications();
         });
     </script>
